@@ -1,63 +1,158 @@
 {
-  "squad": "COMSOC – Computer Society",
+  "squad": "SYNC",
   "theme_color": "#F5C518",
   "members": [
     {
       "id": "member-001",
-      "name": "Printe",
-      "role": "Squad Captain",
+      "name": "aaron",
+      "role": "The Sporty",
       "quote": "Code hard, play harder. Every line written is a step closer to greatness — on and off the court.",
       "social": {
         "label": "GitHub",
-        "url": "https://github.com/",
+        "url": "https://gjsaaron.github.io/",
         "icon": "bi-github"
       },
       "accent_color": "#F5C518",
       "images": [
-        "assets/members/member-001/showcase.jpg",
-        "assets/members/member-001/thumbnail.png",
-        "https://placehold.co/400x533/111111/F5C518?text=BOX+PHOTO&font=raleway"
+        "assets/members/aaron/aaronBg.png",
+        "assets/members/aaron/aaronNoBg.png",
+        "assets/members/aaron/aaronBox.png"
       ],
-      "edition": "#001",
-      "series": "COMSOC Series 1"
+      "edition": "#008",
+      "series": "SYNC Series 1"
     },
     {
       "id": "member-002",
-      "name": "Coming Soon",
-      "role": "Squad Member",
+      "name": "Rhendel",
+      "role": "The Level 3",
       "quote": "The next drop is almost here. Stay tuned for the next collector's edition.",
       "social": {
         "label": "GitHub",
-        "url": "#",
+        "url": "https://delrhen.github.io/",
         "icon": "bi-github"
       },
-      "accent_color": "#F5C518",
+      "accent_color": "#008000",
       "images": [
-        "https://placehold.co/400x533/111111/F5C518?text=COMING+SOON&font=raleway",
-        "https://placehold.co/400x533/0d0d0d/F5C518?text=PHOTO+2&font=raleway",
-        "https://placehold.co/400x533/0d0d0d/F5C518?text=BOX+PHOTO&font=raleway"
+        "assets/members/rhendel/rhendelBg.png",
+        "assets/members/rhendel/rhendelNoBg.png",
+        "assets/members/rhendel/rhendelBox.png"
       ],
-      "edition": "#002",
-      "series": "COMSOC Series 1"
+      "edition": "#003",
+      "series": "SYNC Series 1"
     },
     {
       "id": "member-003",
-      "name": "Coming Soon",
-      "role": "Squad Member",
-      "quote": "Another legend in the making. Watch this space for the next reveal.",
+      "name": "Michael",
+      "role": "The Car Guy",
+      "quote": "The next drop is almost here. Stay tuned for the next collector's edition.",
       "social": {
         "label": "GitHub",
-        "url": "#",
+        "url": "https://chael-bthn.github.io/",
         "icon": "bi-github"
       },
-      "accent_color": "#F5C518",
+      "accent_color": "#964B00",
       "images": [
-        "https://placehold.co/400x533/111111/F5C518?text=COMING+SOON&font=raleway",
-        "https://placehold.co/400x533/0d0d0d/F5C518?text=PHOTO+2&font=raleway",
-        "https://placehold.co/400x533/0d0d0d/F5C518?text=BOX+PHOTO&font=raleway"
+        "assets/members/michael/michaelBg.png",
+        "assets/members/michael/michaelNoBg.png",
+        "assets/members/michael/michaelBox.png"
       ],
-      "edition": "#003",
-      "series": "COMSOC Series 1"
+      "edition": "#005",
+      "series": "SYNC Series 1"
+    },
+        {
+      "id": "member-002",
+      "name": "Ronald",
+      "role": "The Mcdo Incident",
+      "quote": "The next drop is almost here. Stay tuned for the next collector's edition.",
+      "social": {
+        "label": "GitHub",
+        "url": "https://mrcsrcna.github.io/",
+        "icon": "bi-github"
+      },
+      "accent_color": "#00008B",
+      "images": [
+        "assets/members/ronald/ronaldBg.png",
+        "assets/members/ronald/ronaldNoBg.png",
+        "assets/members/ronald/ronaldBox.png"
+      ],
+      "edition": "#002",
+      "series": "SYNC Series 1"
+    },
+        {
+      "id": "member-002",
+      "name": "Andrei",
+      "role": "The Bouncer",
+      "quote": "The next drop is almost here. Stay tuned for the next collector's edition.",
+      "social": {
+        "label": "GitHub",
+        "url": "https://mrcsrcna.github.io/",
+        "icon": "bi-github"
+      },
+      "accent_color": "#ADD8E6",
+      "images": [
+        "assets/members/andrei/andreiBg.png",
+        "assets/members/andrei/andreiNoBg.png",
+        "assets/members/andrei/andreiBox.png"
+      ],
+      "edition": "#006",
+      "series": "SYNC Series 1"
+    },
+        {
+      "id": "member-002",
+      "name": "Zander",
+      "role": "The Happy Pill",
+      "quote": "The next drop is almost here. Stay tuned for the next collector's edition.",
+      "social": {
+        "label": "GitHub",
+        "url": "https://jderAtenciana.github.io/",
+        "icon": "bi-github"
+      },
+      "accent_color": "#800020",
+      "images": [
+        "assets/members/zander/zanderBg.png",
+        "assets/members/zander/zanderNoBg.png",
+        "assets/members/zander/zanderBox.png"
+      ],
+      "edition": "#069",
+      "series": "SYNC Series 1"
+    },
+        {
+      "id": "member-002",
+      "name": "Aeron",
+      "role": "The Goat",
+      "quote": "The next drop is almost here. Stay tuned for the next collector's edition.",
+      "social": {
+        "label": "GitHub",
+        "url": "https://gjsaaron.github.io/",
+        "icon": "bi-github"
+      },
+      "accent_color": "#808080",
+      "images": [
+        "assets/members/aeron/aeronBg.png",
+        "assets/members/aeron/aeronNoBg.png",
+        "assets/members/aeron/aeronBox.png"
+      ],
+      "edition": "#001",
+      "series": "SYNC Series 1"
+    },
+        {
+      "id": "member-002",
+      "name": "Kim",
+      "role": "The Bomber",
+      "quote": "The next drop is almost here. Stay tuned for the next collector's edition.",
+      "social": {
+        "label": "GitHub",
+        "url": "https://gjsaaron.github.io/",
+        "icon": "bi-github"
+      },
+      "accent_color": "#411900",
+      "images": [
+        "assets/members/kim/kimBg.png",
+        "assets/members/kim/kimNoBg.png",
+        "assets/members/kim/kimBox.png"
+      ],
+      "edition": "#007",
+      "series": "SYNC Series 1"
     }
   ]
 }
