@@ -1,0 +1,63 @@
+{
+  "squad": "COMSOC – Computer Society",
+  "theme_color": "#F5C518",
+  "members": [
+    {
+      "id": "member-001",
+      "name": "Printe",
+      "role": "Squad Captain",
+      "quote": "Code hard, play harder. Every line written is a step closer to greatness — on and off the court.",
+      "social": {
+        "label": "GitHub",
+        "url": "https://github.com/",
+        "icon": "bi-github"
+      },
+      "accent_color": "#F5C518",
+      "images": [
+        "assets/members/member-001/showcase.jpg",
+        "assets/members/member-001/thumbnail.png",
+        "https://placehold.co/400x533/111111/F5C518?text=BOX+PHOTO&font=raleway"
+      ],
+      "edition": "#001",
+      "series": "COMSOC Series 1"
+    },
+    {
+      "id": "member-002",
+      "name": "Coming Soon",
+      "role": "Squad Member",
+      "quote": "The next drop is almost here. Stay tuned for the next collector's edition.",
+      "social": {
+        "label": "GitHub",
+        "url": "#",
+        "icon": "bi-github"
+      },
+      "accent_color": "#F5C518",
+      "images": [
+        "https://placehold.co/400x533/111111/F5C518?text=COMING+SOON&font=raleway",
+        "https://placehold.co/400x533/0d0d0d/F5C518?text=PHOTO+2&font=raleway",
+        "https://placehold.co/400x533/0d0d0d/F5C518?text=BOX+PHOTO&font=raleway"
+      ],
+      "edition": "#002",
+      "series": "COMSOC Series 1"
+    },
+    {
+      "id": "member-003",
+      "name": "Coming Soon",
+      "role": "Squad Member",
+      "quote": "Another legend in the making. Watch this space for the next reveal.",
+      "social": {
+        "label": "GitHub",
+        "url": "#",
+        "icon": "bi-github"
+      },
+      "accent_color": "#F5C518",
+      "images": [
+        "https://placehold.co/400x533/111111/F5C518?text=COMING+SOON&font=raleway",
+        "https://placehold.co/400x533/0d0d0d/F5C518?text=PHOTO+2&font=raleway",
+        "https://placehold.co/400x533/0d0d0d/F5C518?text=BOX+PHOTO&font=raleway"
+      ],
+      "edition": "#003",
+      "series": "COMSOC Series 1"
+    }
+  ]
+}

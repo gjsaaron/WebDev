@@ -2,18 +2,595 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Json - Activity 2</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-B/GM4XqrwHnWXNOWMbloTmrYXZg10cakYGmpfsR/bbzQ6JAJI4ihuyADKLnBgrCe" crossorigin="anonymous">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMSOC – Funko Pop Showcase</title>
+
+  <!-- Bootstrap 5.3 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── ROOT ────────────────────────────────────────────── */
+    :root {
+      --accent:      #F5C518;
+      --accent-glow: rgba(245, 197, 24, 0.28);
+      --bg:          #0d0d0d;
+      --text:        #f0f0f0;
+      --muted:       #888;
+      --border:      rgba(255, 255, 255, 0.18);
+      --t:           0.35s;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      /* Dark grid background — matching the wireframe */
+      background-color: var(--bg);
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.038) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.038) 1px, transparent 1px);
+      background-size: 48px 48px;
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* ── LOADING OVERLAY ─────────────────────────────────── */
+    #loader {
+      position: fixed; inset: 0;
+      background: var(--bg);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      transition: opacity 0.4s ease;
+    }
+    #loader.gone { opacity: 0; pointer-events: none; }
+
+    .spin {
+      width: 50px; height: 50px;
+      border: 3px solid rgba(245, 197, 24, 0.18);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── HEADER ──────────────────────────────────────────── */
+    header {
+      text-align: center;
+      padding: 2.2rem 0 1.8rem;
+    }
+    .header-sub {
+      font-size: 0.8rem;
+      color: var(--muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 0.1rem;
+    }
+    .header-title {
+      font-family: 'Bangers', cursive;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      letter-spacing: 8px;
+      color: #fff;
+      text-shadow: 0 0 24px var(--accent-glow);
+      margin: 0;
+      line-height: 1;
+    }
+
+    /* ── MAIN ────────────────────────────────────────────── */
+    #main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      padding: 1rem 0 2.5rem;
+    }
+
+    /* ── LEFT PHOTO STRIP ────────────────────────────────── */
+    /*  Shows 3 different photos of the ACTIVE member.
+        Clicking a thumb swaps the center image (no member change). */
+    .photo-strip {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .photo-thumb {
+      display: block;
+      width: 92px;
+      height: 116px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 0;
+      flex-shrink: 0;
+      transition: border-color 0.22s, box-shadow 0.22s, transform 0.22s;
+    }
+    .photo-thumb.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+    .photo-thumb:hover:not(.active) {
+      border-color: rgba(255, 255, 255, 0.42);
+      transform: translateX(4px);
+    }
+    .photo-thumb img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+
+    /* ── CENTER SHOWCASE ─────────────────────────────────── */
+    #center-showcase {
+      transition: opacity var(--t) ease;
+    }
+    #center-showcase.fading { opacity: 0; }
+
+    .center-frame {
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    #center-img {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+
+    /* ── RIGHT PANEL ─────────────────────────────────────── */
+    #right-panel {
+      transition: opacity var(--t) ease;
+    }
+    #right-panel.fading { opacity: 0; }
+
+    .member-role-tag {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.2rem;
+    }
+    .member-name {
+      font-family: 'Bangers', cursive;
+      font-size: clamp(3.5rem, 6vw, 6rem);
+      letter-spacing: 4px;
+      color: #fff;
+      line-height: 1.05;
+      margin: 0;
+    }
+    .member-meta {
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 0.3rem;
+    }
+    .member-quote {
+      font-size: 1rem;
+      color: #ccc;
+      line-height: 1.82;
+      margin-top: 1rem;
+      max-width: 420px;
+    }
+    .member-social-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      padding: 0.32rem 0.9rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .member-social-link:hover {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+    }
+
+    /* ── OTHER MEMBERS ───────────────────────────────────── */
+    /*  Clicking triggers a fresh fetch('data/members.json') */
+    .other-label {
+      font-size: 0.82rem;
+      color: var(--text);
+      font-weight: 600;
+      margin-top: 1.6rem;
+      margin-bottom: 0.55rem;
+      letter-spacing: 0.3px;
+    }
+    #other-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .other-thumb {
+      display: block;
+      position: relative;
+      width: 76px;
+      height: 96px;
+      border: 2px solid var(--border);
+      border-radius: 9px;
+      overflow: hidden;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 0;
+      transition: border-color 0.22s, box-shadow 0.22s, transform 0.22s;
+    }
+    .other-thumb.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+    .other-thumb:hover:not(.active) {
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: translateY(-4px);
+    }
+    .other-thumb img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+
+    /* Spinner overlay while fetching JSON for a member */
+    .other-thumb.loading::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 5px;
+      z-index: 1;
+    }
+    .other-thumb.loading::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 18px; height: 18px;
+      margin: -9px 0 0 -9px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      z-index: 2;
+    }
+
+    /* ── PHOTO LABEL STRIP ───────────────────────────────── */
+    .photo-label {
+      font-size: 0.55rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 0.2rem;
+    }
+    .photo-thumb-wrap.active .photo-label { color: var(--accent); }
+
+    /* ── FOOTER ──────────────────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 1rem 0 1.5rem;
+      font-size: 0.68rem;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+
+    /* ── DIVIDER ─────────────────────────────────────────── */
+    .panel-divider {
+      border: 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      margin: 1.25rem 0 0;
+    }
+
+    /* ── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 767px) {
+      .photo-strip {
+        flex-direction: row;
+        justify-content: center;
+      }
+      .photo-thumb { width: 68px; height: 85px; }
+      #main { padding: 0.5rem 0 2rem; }
+      .member-name { letter-spacing: 2px; }
+    }
+
+    @media (max-width: 575px) {
+      .other-thumb { width: 58px; height: 73px; }
+      .photo-thumb { width: 56px; height: 70px; }
+    }
+  </style>
 </head>
 
 <body>
-    <h1></h1>
-    <script type="module" src="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-1a/pXj49ZQ1aHEmrJ+gMw1otqoVsYwlEnlD8mIfY2TV03r20Y0CN7uqx1tQogjPL"
-        crossorigin="anonymous"></script>
-</body>
 
+  <!-- Loading Overlay -->
+  <div id="loader">
+    <div class="spin"></div>
+    <span style="font-family:'Bangers',cursive; letter-spacing:4px; color:var(--accent)">
+      LOADING SQUAD…
+    </span>
+  </div>
+
+  <!-- ════════ HEADER ════════ -->
+  <header>
+    <div class="container-xl">
+      <div class="row justify-content-center">
+        <div class="col-auto">
+          <p class="header-sub">Get to know our squad!</p>
+          <h1 class="header-title" id="squad-title">COMSOC</h1>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ════════ MAIN ════════ -->
+  <main id="main">
+    <div class="container-xl w-100">
+
+      <!--
+        Bootstrap 3-column layout:
+          col-auto  → left photo strip (3 photos of current member)
+          col-md-5  → center large showcase image (bigger)
+          col       → right: member info + Other Members grid
+      -->
+      <div class="row align-items-center justify-content-center g-4">
+
+        <!-- ── LEFT: 3 photos of the active member ── -->
+        <div class="col-auto align-self-center">
+          <div class="photo-strip" id="photo-strip">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- ── CENTER: large showcase image ── -->
+        <div class="col-7 col-sm-5 col-md-5 col-lg-5 col-xl-4">
+          <div id="center-showcase">
+            <div class="center-frame">
+              <img id="center-img" src="" alt="" draggable="false">
+            </div>
+          </div>
+        </div>
+
+        <!-- ── RIGHT: member info + Other Members ── -->
+        <div class="col-12 col-md col-lg-5 align-self-start">
+          <div id="right-panel">
+
+            <!-- Member heading -->
+            <p class="member-role-tag" id="member-role">—</p>
+            <h2 class="member-name" id="member-name">—</h2>
+            <p class="member-meta" id="member-meta">—</p>
+
+            <!-- Quote / description -->
+            <p class="member-quote" id="member-quote">—</p>
+
+            <!-- Social link -->
+            <a class="member-social-link" id="member-social"
+               href="#" target="_blank" rel="noopener">
+              <i class="bi" id="social-icon"></i>
+              <span id="social-label">Social</span>
+            </a>
+
+            <hr class="panel-divider">
+
+            <!-- Other Members (each click = fresh JSON fetch) -->
+            <p class="other-label">Other Members:</p>
+            <div id="other-grid">
+              <!-- Rendered by JS -->
+            </div>
+
+          </div><!-- /#right-panel -->
+        </div>
+
+      </div><!-- /.row -->
+    </div><!-- /.container-xl -->
+  </main>
+
+  <!-- ════════ FOOTER ════════ -->
+  <footer>
+    <div class="container-fluid">
+      COMSOC &copy; 2026 &nbsp;·&nbsp; Funko Pop Showcase &nbsp;·&nbsp; Internal Use Only
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // ══════════════════════════════════════════════════════════
+    //  COMSOC Funko Pop Showcase
+    //
+    //  STATE:
+    //    activeMember (int) — index of the currently shown member
+    //    activePhoto  (int) — which of the 3 photos is in center (0/1/2)
+    //
+    //  LEFT STRIP CLICK  → swap center image only (no JSON call)
+    //  OTHER MEMBERS CLICK → fetch('data/members.json') → full render
+    // ══════════════════════════════════════════════════════════
+
+    const TRANSITION_MS = 350;
+
+    /* State */
+    let allMembers   = [];
+    let activeMember = 0;
+    let activePhoto  = 0;
+    let isAnimating  = false;
+
+    /* DOM refs */
+    const loader        = document.getElementById('loader');
+    const squadTitle    = document.getElementById('squad-title');
+    const photoStrip    = document.getElementById('photo-strip');
+    const centerShowcase = document.getElementById('center-showcase');
+    const centerImg     = document.getElementById('center-img');
+    const rightPanel    = document.getElementById('right-panel');
+    const memberRole    = document.getElementById('member-role');
+    const memberName    = document.getElementById('member-name');
+    const memberMeta    = document.getElementById('member-meta');
+    const memberQuote   = document.getElementById('member-quote');
+    const memberSocial  = document.getElementById('member-social');
+    const socialIcon    = document.getElementById('social-icon');
+    const socialLabel   = document.getElementById('social-label');
+    const otherGrid     = document.getElementById('other-grid');
+
+    /* Photo labels for the left strip */
+    const PHOTO_LABELS = ['Main', 'Alt', 'Box'];
+
+    // ── Switch photo of SAME member (left strip click) ─────
+    function switchPhoto(photoIndex) {
+      if (photoIndex === activePhoto) return;
+      activePhoto = photoIndex;
+
+      // Fade center image only
+      centerShowcase.classList.add('fading');
+      setTimeout(() => {
+        centerImg.src = allMembers[activeMember].images[activePhoto];
+        centerShowcase.classList.remove('fading');
+
+        // Update active state on left strip
+        document.querySelectorAll('.photo-thumb').forEach((el, i) =>
+          el.classList.toggle('active', i === activePhoto));
+      }, TRANSITION_MS);
+    }
+
+    // ── Switch MEMBER — triggers fresh JSON fetch ──────────
+    async function switchMember(memberIndex) {
+      if (isAnimating || memberIndex === activeMember) return;
+      isAnimating = true;
+
+      // Show loading spinner on the clicked thumb
+      const thumbs     = otherGrid.querySelectorAll('.other-thumb');
+      const clickedEl  = thumbs[memberIndex];
+      if (clickedEl) clickedEl.classList.add('loading');
+
+      try {
+        // ★ FRESH JSON CALL — every "Other Members" click re-fetches
+        const res  = await fetch(`data/members.json?t=${Date.now()}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+
+        // Update cached members list with fresh data
+        allMembers = data.members;
+
+        // Fade out center + right panel
+        [centerShowcase, rightPanel].forEach(el => el.classList.add('fading'));
+
+        setTimeout(() => {
+          activeMember = memberIndex;
+          activePhoto  = 0;      // always start on photo 0 for new member
+          renderAll();
+
+          [centerShowcase, rightPanel].forEach(el => el.classList.remove('fading'));
+          setTimeout(() => { isAnimating = false; }, TRANSITION_MS);
+        }, TRANSITION_MS);
+
+      } catch (err) {
+        console.error('[switchMember] JSON fetch failed:', err);
+        if (clickedEl) clickedEl.classList.remove('loading');
+        isAnimating = false;
+      }
+    }
+
+    // ── Full render from current state ─────────────────────
+    function renderAll() {
+      const m = allMembers[activeMember];
+
+      // Update CSS accent color for this member
+      document.documentElement.style.setProperty('--accent', m.accent_color || '#F5C518');
+
+      // ── Center image ──────────────────────────────────────
+      centerImg.src = m.images[activePhoto];
+      centerImg.alt = `${m.name} — Photo ${activePhoto + 1}`;
+
+      // ── Left photo strip (3 photos of active member) ──────
+      photoStrip.innerHTML = m.images.map((src, i) => `
+        <button class="photo-thumb${i === activePhoto ? ' active' : ''}"
+                data-pi="${i}"
+                aria-label="${escHtml(PHOTO_LABELS[i] || 'Photo ' + (i+1))} view of ${escHtml(m.name)}">
+          <img src="${src}" alt="Photo ${i + 1}" loading="lazy" draggable="false">
+        </button>`
+      ).join('');
+
+      photoStrip.querySelectorAll('.photo-thumb').forEach(btn =>
+        btn.addEventListener('click', () => switchPhoto(+btn.dataset.pi))
+      );
+
+      // ── Right panel: member info ──────────────────────────
+      memberRole.textContent      = m.role;
+      memberName.textContent      = m.name;
+      memberMeta.textContent      = `${m.series}  ·  Edition ${m.edition}`;
+      memberQuote.textContent     = m.quote;
+      memberSocial.href           = m.social.url;
+      socialIcon.className        = `bi ${m.social.icon}`;
+      socialLabel.textContent     = m.social.label;
+
+      // ── Other members grid ────────────────────────────────
+      //  Uses first photo (images[0]) of each member as thumbnail
+      otherGrid.innerHTML = allMembers.map((om, i) => `
+        <button class="other-thumb${i === activeMember ? ' active' : ''}"
+                data-mi="${i}"
+                title="${escHtml(om.name)}"
+                aria-label="View ${escHtml(om.name)}">
+          <img src="${om.images[0]}" alt="${escHtml(om.name)}" loading="lazy" draggable="false">
+        </button>`
+      ).join('');
+
+      otherGrid.querySelectorAll('.other-thumb').forEach(btn =>
+        btn.addEventListener('click', () => switchMember(+btn.dataset.mi))
+      );
+    }
+
+    // ── Escape helper (XSS safety) ─────────────────────────
+    function escHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    // ── Init: first JSON load ──────────────────────────────
+    async function init() {
+      try {
+        const res  = await fetch('data/members.json');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+
+        allMembers = data.members;
+        squadTitle.textContent = data.squad;
+
+        renderAll();
+
+        loader.classList.add('gone');
+        setTimeout(() => loader.remove(), 500);
+
+      } catch (err) {
+        console.error('[init] Failed:', err);
+        loader.innerHTML = `
+          <i class="bi bi-exclamation-triangle" style="font-size:2rem;color:#f44444"></i>
+          <span style="font-family:'Bangers',cursive;letter-spacing:2px;color:#f44444">
+            Failed to load members.json
+          </span>
+          <small style="color:#666;font-size:.8rem">${escHtml(err.message)}</small>`;
+      }
+    }
+
+    init();
+  </script>
+
+</body>
 </html>
