@@ -6,7 +6,7 @@
       "id": "member-001",
       "name": "aaron",
       "role": "The Sporty",
-      "quote": "Code hard, play harder. Every line written is a step closer to greatness — on and off the court.",
+      "quote": "'Ayoko nyan erp!'",
       "social": {
         "label": "GitHub",
         "url": "https://gjsaaron.github.io/",
@@ -14,9 +14,9 @@
       },
       "accent_color": "#F5C518",
       "images": [
-        "assets/members/aaron/aaronBg.png",
-        "assets/members/aaron/aaronNoBg.png",
-        "assets/members/aaron/aaronBox.png"
+        "assets/members/aaron/aaronBg.webp",
+        "assets/members/aaron/aaronNoBg.webp",
+        "assets/members/aaron/aaronBox.webp"
       ],
       "edition": "#008",
       "series": "SYNC Series 1"
@@ -25,7 +25,7 @@
       "id": "member-002",
       "name": "Rhendel",
       "role": "The Level 3",
-      "quote": "The next drop is almost here. Stay tuned for the next collector's edition.",
+      "quote": "'Tinatamad ako tol.'",
       "social": {
         "label": "GitHub",
         "url": "https://delrhen.github.io/",
@@ -33,9 +33,9 @@
       },
       "accent_color": "#008000",
       "images": [
-        "assets/members/rhendel/rhendelBg.png",
-        "assets/members/rhendel/rhendelNoBg.png",
-        "assets/members/rhendel/rhendelBox.png"
+        "assets/members/rhendel/rhendelBg.webp",
+        "assets/members/rhendel/rhendelNoBg.webp",
+        "assets/members/rhendel/rhendelBox.webp"
       ],
       "edition": "#003",
       "series": "SYNC Series 1"
@@ -44,7 +44,7 @@
       "id": "member-003",
       "name": "Michael",
       "role": "The Car Guy",
-      "quote": "The next drop is almost here. Stay tuned for the next collector's edition.",
+      "quote": "'Cashout lang ako kay mamc.'",
       "social": {
         "label": "GitHub",
         "url": "https://chael-bthn.github.io/",
@@ -52,9 +52,9 @@
       },
       "accent_color": "#964B00",
       "images": [
-        "assets/members/michael/michaelBg.png",
-        "assets/members/michael/michaelNoBg.png",
-        "assets/members/michael/michaelBox.png"
+        "assets/members/michael/michaelBg.webp",
+        "assets/members/michael/michaelNoBg.webp",
+        "assets/members/michael/michaelBox.webp"
       ],
       "edition": "#005",
       "series": "SYNC Series 1"
@@ -63,17 +63,17 @@
       "id": "member-002",
       "name": "Ronald",
       "role": "The Mcdo Incident",
-      "quote": "The next drop is almost here. Stay tuned for the next collector's edition.",
+      "quote": "'Saan tayo kakain?'",
       "social": {
         "label": "GitHub",
-        "url": "https://mrcsrcna.github.io/",
+        "url": "https://rmgacis.github.io/",
         "icon": "bi-github"
       },
       "accent_color": "#00008B",
       "images": [
-        "assets/members/ronald/ronaldBg.png",
-        "assets/members/ronald/ronaldNoBg.png",
-        "assets/members/ronald/ronaldBox.png"
+        "assets/members/ronald/ronaldBg.webp",
+        "assets/members/ronald/ronaldNoBg.webp",
+        "assets/members/ronald/ronaldBox.webp"
       ],
       "edition": "#002",
       "series": "SYNC Series 1"
@@ -82,7 +82,7 @@
       "id": "member-002",
       "name": "Andrei",
       "role": "The Bouncer",
-      "quote": "The next drop is almost here. Stay tuned for the next collector's edition.",
+      "quote": "'Bounce na ko tol.'",
       "social": {
         "label": "GitHub",
         "url": "https://mrcsrcna.github.io/",
@@ -90,9 +90,9 @@
       },
       "accent_color": "#ADD8E6",
       "images": [
-        "assets/members/andrei/andreiBg.png",
-        "assets/members/andrei/andreiNoBg.png",
-        "assets/members/andrei/andreiBox.png"
+        "assets/members/andrei/andreiBg.webp",
+        "assets/members/andrei/andreiNoBg.webp",
+        "assets/members/andrei/andreiBox.webp"
       ],
       "edition": "#006",
       "series": "SYNC Series 1"
@@ -101,7 +101,7 @@
       "id": "member-002",
       "name": "Zander",
       "role": "The Happy Pill",
-      "quote": "The next drop is almost here. Stay tuned for the next collector's edition.",
+      "quote": "'Sunod ako erp, hatid ko lang si Aila.'",
       "social": {
         "label": "GitHub",
         "url": "https://jderAtenciana.github.io/",
@@ -109,9 +109,9 @@
       },
       "accent_color": "#800020",
       "images": [
-        "assets/members/zander/zanderBg.png",
-        "assets/members/zander/zanderNoBg.png",
-        "assets/members/zander/zanderBox.png"
+        "assets/members/zander/zanderBg.webp",
+        "assets/members/zander/zanderNoBg.webp",
+        "assets/members/zander/zanderBox.webp"
       ],
       "edition": "#069",
       "series": "SYNC Series 1"
@@ -120,17 +120,17 @@
       "id": "member-002",
       "name": "Aeron",
       "role": "The Goat",
-      "quote": "The next drop is almost here. Stay tuned for the next collector's edition.",
+      "quote": "'Daan lang ako sa Alfamart.'",
       "social": {
         "label": "GitHub",
-        "url": "https://gjsaaron.github.io/",
+        "url": "https://aeronnarvacan.github.io/",
         "icon": "bi-github"
       },
       "accent_color": "#808080",
       "images": [
-        "assets/members/aeron/aeronBg.png",
-        "assets/members/aeron/aeronNoBg.png",
-        "assets/members/aeron/aeronBox.png"
+        "assets/members/aeron/aeronBg.webp",
+        "assets/members/aeron/aeronNoBg.webp",
+        "assets/members/aeron/aeronBox.webp"
       ],
       "edition": "#001",
       "series": "SYNC Series 1"
@@ -139,17 +139,17 @@
       "id": "member-002",
       "name": "Kim",
       "role": "The Bomber",
-      "quote": "The next drop is almost here. Stay tuned for the next collector's edition.",
+      "quote": "'Tara buhat erp.'",
       "social": {
         "label": "GitHub",
-        "url": "https://gjsaaron.github.io/",
+        "url": "https://#.github.io/",
         "icon": "bi-github"
       },
       "accent_color": "#411900",
       "images": [
-        "assets/members/kim/kimBg.png",
-        "assets/members/kim/kimNoBg.png",
-        "assets/members/kim/kimBox.png"
+        "assets/members/kim/kimBg.webp",
+        "assets/members/kim/kimNoBg.webp",
+        "assets/members/kim/kimBox.webp"
       ],
       "edition": "#007",
       "series": "SYNC Series 1"
