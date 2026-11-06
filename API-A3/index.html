@@ -40,28 +40,37 @@
                 24</span>
             </div>
 
+            <!-- mobile menu toggle -->
+            <button class="btn btn-sm btn-control hamburger-btn d-lg-none" type="button"
+              data-bs-toggle="collapse" data-bs-target="#headerActionsCollapse" aria-expanded="false"
+              aria-controls="headerActionsCollapse" aria-label="Toggle navigation" title="Menu">
+              <i class="bi bi-list fs-5"></i>
+            </button>
 
-            <div class="header-actions">
-              <div class="btn-group btn-group-sm mode-toggle-group" role="group" aria-label="Draft mode">
-                <button class="btn btn-mode active" id="captainsMode" type="button"
-                  title="Standard 24-step competitive pick/ban sequence">Captain's Mode</button>
-                <button class="btn btn-mode" id="customMode" type="button"
-                  title="Free custom picking and banning">Custom Draft</button>
+            <!-- action buttons -->
+            <div class="collapse d-lg-flex header-actions-wrapper" id="headerActionsCollapse">
+              <div class="header-actions">
+                <div class="btn-group btn-group-sm mode-toggle-group" role="group" aria-label="Draft mode">
+                  <button class="btn btn-mode active" id="captainsMode" type="button"
+                    title="Standard 24-step competitive pick/ban sequence">Captain's Mode</button>
+                  <button class="btn btn-mode" id="customMode" type="button"
+                    title="Free custom picking and banning">Custom Draft</button>
+                </div>
+
+                <button class="btn btn-sm btn-action-toggle" id="banToggleBtn" type="button" title="Toggle Pick or Ban">
+                  <i class="bi bi-slash-circle me-1"></i><span id="banToggleLabel">Ban Mode</span>
+                </button>
+
+                <button class="btn btn-sm btn-control" id="undoBtn" disabled title="Undo last action">
+                  <i class="bi bi-arrow-counterclockwise"></i><span class="d-none d-xl-inline ms-1">Undo</span>
+                </button>
+                <button class="btn btn-sm btn-control" id="resetBtn" title="Reset current draft">
+                  <i class="bi bi-arrow-repeat"></i><span class="d-none d-xl-inline ms-1">Reset</span>
+                </button>
+                <button class="btn btn-sm btn-control btn-save" id="saveDraftBtn" title="Save draft">
+                  <i class="bi bi-bookmark-plus"></i><span class="d-none d-xl-inline ms-1">Save</span>
+                </button>
               </div>
-
-              <button class="btn btn-sm btn-action-toggle" id="banToggleBtn" type="button" title="Toggle Pick or Ban">
-                <i class="bi bi-slash-circle me-1"></i><span id="banToggleLabel">Ban Mode</span>
-              </button>
-
-              <button class="btn btn-sm btn-control" id="undoBtn" disabled title="Undo last action">
-                <i class="bi bi-arrow-counterclockwise"></i><span class="d-none d-xl-inline ms-1">Undo</span>
-              </button>
-              <button class="btn btn-sm btn-control" id="resetBtn" title="Reset current draft">
-                <i class="bi bi-arrow-repeat"></i><span class="d-none d-xl-inline ms-1">Reset</span>
-              </button>
-              <button class="btn btn-sm btn-control btn-save" id="saveDraftBtn" title="Save draft">
-                <i class="bi bi-bookmark-plus"></i><span class="d-none d-xl-inline ms-1">Save</span>
-              </button>
             </div>
           </div>
         </header>
@@ -75,7 +84,7 @@
       <div class="col-12">
         <div class="row g-0">
 
-          <div class="col-8">
+          <div class="col-12 col-lg-8">
             <div class="card mt-0 wireframe-box gallery-box" style="height: 48vh; max-height: 48vh; min-height: 48vh;">
               <div class="card-header wireframe-header">
                 <div class="row g-2 align-items-center w-100 m-0">
@@ -156,14 +165,23 @@
           </div>
 
 
-          <div class="col-4">
+          <div class="col-12 col-lg-4">
             <div class="card mt-0 wireframe-box analysis-box" style="height: 48vh; max-height: 48vh; min-height: 48vh;">
               <div class="card-header wireframe-header d-flex justify-content-between align-items-center">
-                <h2 class="card-title wireframe-title mb-0">DRAFT SUGGESTION</h2>
-                <span class="draft-phase-tag" id="draftPhaseTag">Phase 1 Bans</span>
+                <div class="d-flex align-items-center gap-2">
+                  <h2 class="card-title wireframe-title mb-0">DRAFT SUGGESTION</h2>
+                  <span class="draft-phase-tag" id="draftPhaseTag">Phase 1 Bans</span>
+                </div>
+                <button class="btn btn-sm btn-control btn-suggestion-toggle d-lg-none" type="button"
+                  data-bs-toggle="collapse" data-bs-target="#analysisBodyCollapse" aria-expanded="false"
+                  aria-controls="analysisBodyCollapse" aria-label="Toggle draft suggestions" title="Toggle Suggestions">
+                  <i class="bi bi-chevron-down suggestion-arrow-icon" id="suggestionArrowIcon"></i>
+                </button>
               </div>
 
-              <div class="card-body wireframe-body analysis-body p-2">
+              <!-- suggestion panel: collapsed on mobile, visible on desktop -->
+              <div class="collapse d-lg-block" id="analysisBodyCollapse">
+                <div class="card-body wireframe-body analysis-body p-2">
 
                 <div class="card sub-card analysis-panel-section mb-2">
                   <div class="card-body p-2">
@@ -224,6 +242,7 @@
                 </div>
               </div>
             </div>
+            </div>
           </div>
         </div>
       </div>
@@ -236,7 +255,7 @@
       <div class="col-12">
         <div class="row g-0">
 
-          <div class="col-6">
+          <div class="col-12 col-lg-6">
             <div class="card mt-1 wireframe-box bans-box radiant-bans-box" id="radiantBansBox"
               style="min-height:11vh ;">
               <div class="wireframe-box-label radiant-label">RADIANT BANS</div>
@@ -249,7 +268,7 @@
           </div>
 
 
-          <div class="col-6">
+          <div class="col-12 col-lg-6">
             <div class="card mt-1 wireframe-box bans-box dire-bans-box" id="direBansBox" style="min-height:11vh ;">
               <div class="wireframe-box-label dire-label">DIRE BANS</div>
               <div class="card-body p-2">
@@ -270,7 +289,7 @@
       <div class="col-12">
         <div class="row g-0">
 
-          <div class="col-6">
+          <div class="col-12 col-lg-6">
             <div class="card mt-1 wireframe-box picks-box radiant-picks-box" id="radiantPicksBox"
               style="min-height:20vh ;">
               <div class="wireframe-box-label radiant-label">RADIANT PICKS</div>
@@ -283,7 +302,7 @@
           </div>
 
 
-          <div class="col-6">
+          <div class="col-12 col-lg-6">
             <div class="card mt-1 wireframe-box picks-box dire-picks-box" id="direPicksBox" style="min-height:20vh ;">
               <div class="wireframe-box-label dire-label">DIRE PICKS</div>
               <div class="card-body p-2">
@@ -349,7 +368,7 @@
         const warn = document.createElement("div");
         warn.className = "alert alert-warning text-center m-3 py-2";
         warn.style.zIndex = "9999";
-        warn.innerHTML = `<strong>Protocol Notice:</strong> You opened this file directly via <code>file://</code>. Browsers restrict API and JavaScript module requests over local files. Start Apache in XAMPP and visit <a href="http://localhost/WebDev/API-A3/test.html" class="alert-link">http://localhost/WebDev/API-A3/test.html</a> for full functionality.`;
+        warn.innerHTML = `<strong>Protocol Notice:</strong> You opened this file directly via <code>file://</code>. Browsers restrict API and JavaScript module requests over local files. Start Apache in XAMPP and visit <a href="http://localhost/WebDev/API-A3/index.html" class="alert-link">http://localhost/WebDev/API-A3/index.html</a> for full functionality.`;
         document.body.prepend(warn);
       });
     }
