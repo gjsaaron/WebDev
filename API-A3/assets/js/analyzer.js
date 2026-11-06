@@ -1,7 +1,7 @@
-// Dota 2 Strategy Analyzer & Suggestion Engine
+// draft evaluator
 
 export function getHeroWinRate(hero) {
-  // Use pro games if sufficient sample, else pub 5_win/5_pick (Archon/Legend) or 50%
+  // pro or pub winrate
   if (hero.pro_pick && hero.pro_pick >= 15) {
     return (hero.pro_win / hero.pro_pick) * 100;
   }
@@ -86,7 +86,7 @@ export function calculateDraftAdvantage(radiantPicks, direPicks) {
   let radScore = 50;
   let direScore = 50;
 
-  // Base hero winrates
+  // avg winrates
   if (radiantPicks.length) {
     const avgRadWr = radiantPicks.reduce((acc, h) => acc + getHeroWinRate(h), 0) / radiantPicks.length;
     radScore += (avgRadWr - 50) * 0.8;
@@ -96,7 +96,7 @@ export function calculateDraftAdvantage(radiantPicks, direPicks) {
     direScore += (avgDireWr - 50) * 0.8;
   }
 
-  // Synergy bonuses
+  // synergy bonus
   if (radEval.disables > 0) radScore += 2;
   if (radEval.initiation > 0) radScore += 2;
   if (radEval.carries >= 1 && radEval.carries <= 2) radScore += 2;
@@ -107,7 +107,7 @@ export function calculateDraftAdvantage(radiantPicks, direPicks) {
   if (direEval.carries >= 1 && direEval.carries <= 2) direScore += 2;
   if (direEval.supports >= 1) direScore += 2;
 
-  // Normalization
+  // normalize
   const total = radScore + direScore;
   const radiantPct = Math.round((radScore / total) * 100);
   const direPct = 100 - radiantPct;
@@ -137,25 +137,25 @@ export function generateHeroSuggestions(availableHeroes, teamHeroes, enemyHeroes
     const isDurable = roles.includes("Durable");
     const isPusher = roles.includes("Pusher");
 
-    // Need disables?
+    
     if (teamEval.disables === 0 && isDisabler) {
       score += 6;
       reasons.push("Provides missing disable / CC");
     }
 
-    // Need initiator?
+    
     if (teamEval.initiation === 0 && isInitiator) {
       score += 5;
       reasons.push("Key fight initiator");
     }
 
-    // Need frontline?
+    
     if (teamEval.durable === 0 && isDurable) {
       score += 4;
       reasons.push("Solid frontline / durable");
     }
 
-    // Need core/carry or support balance?
+    
     if (teamEval.carries === 0 && isCarry) {
       score += 5;
       reasons.push("Primary core scaling");
@@ -164,16 +164,16 @@ export function generateHeroSuggestions(availableHeroes, teamHeroes, enemyHeroes
       reasons.push("Supports greedy lineup");
     }
 
-    // Counters to enemy attributes or roles
+    // counter checks
     if (enemyEval.count > 0) {
-      // Enemy has high escape/elusive heroes?
+      
       const enemyHasEscape = enemyHeroes.some(h => (h.roles || []).includes("Escape"));
       if (enemyHasEscape && (isDisabler || hero.localized_name === "Silencer" || hero.localized_name === "Doom" || hero.localized_name === "Lion")) {
         score += 5;
         reasons.push("Counters elusive enemies");
       }
 
-      // Enemy has heavy melee?
+      
       if (enemyEval.meleeCount >= 3 && hero.attack_type === "Ranged" && (roles.includes("Nuker") || isDisabler)) {
         score += 4;
         reasons.push("Kites melee-heavy enemy");

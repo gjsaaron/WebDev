@@ -25,7 +25,7 @@ const heroGrid = $("heroGrid");
 const toastEl = $("appToast");
 const toast = bootstrap.Toast.getOrCreateInstance(toastEl);
 
-// Tooltip DOM Elements
+// tooltip elements
 const tooltipEl = $("heroSkillTooltip");
 const tooltipImg = $("tooltipHeroImg");
 const tooltipName = $("tooltipHeroName");
@@ -45,55 +45,33 @@ function heroPortrait(hero) {
   return `https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/${shortName}.png`;
 }
 
+function formatBriefDescription(text) {
+  if (!text) return "Active or passive hero ability.";
+  const clean = text.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+  if (clean.length <= 110) return clean;
+  const sub = clean.substring(0, 105);
+  const lastSpace = sub.lastIndexOf(" ");
+  return (lastSpace > 60 ? sub.substring(0, lastSpace) : sub) + "...";
+}
+
 function showHeroTooltip(hero, event) {
   if (!hero || !tooltipEl) return;
 
-  tooltipImg.src = heroPortrait(hero);
-  tooltipName.textContent = hero.localized_name.toUpperCase();
+  const allAbilities = (state.heroAbilitiesMap && state.heroAbilitiesMap[hero.name]) || [];
+  const abilities = allAbilities.slice(0, 5);
 
-  const attrMap = {
-    str: { label: "STR", class: "bg-danger" },
-    agi: { label: "AGI", class: "bg-success" },
-    int: { label: "INT", class: "bg-info text-dark" },
-    all: { label: "UNI", class: "bg-warning text-dark" }
-  };
-  const attrInfo = attrMap[hero.primary_attr] || { label: (hero.primary_attr || "").toUpperCase(), class: "bg-secondary" };
-  tooltipAttr.textContent = attrInfo.label;
-  tooltipAttr.className = `badge ${attrInfo.class}`;
-
-  const roles = (hero.roles || []).join(" · ");
-  tooltipRoles.textContent = `${hero.attack_type || ""} · ${roles}`;
-
-  const abilities = (state.heroAbilitiesMap && state.heroAbilitiesMap[hero.name]) || [];
   if (!abilities.length) {
     tooltipSkillsList.innerHTML = `<div class="text-secondary small p-2">Skill details loading or unavailable.</div>`;
   } else {
     tooltipSkillsList.innerHTML = abilities.map(ability => {
-      let dmgBadge = "";
-      if (ability.dmg) {
-        const dmgLower = ability.dmg.toLowerCase();
-        const dmgClass = dmgLower === "physical" ? "dmg-physical" : (dmgLower === "magical" ? "dmg-magical" : "dmg-pure");
-        dmgBadge = `<span class="skill-tag ${dmgClass}">${ability.dmg}</span>`;
-      }
-      const behaviorBadge = ability.behavior ? `<span class="skill-tag behavior-tag">${ability.behavior}</span>` : "";
-      const mcBadge = ability.mc ? `<span class="skill-tag mc-tag">💧 ${ability.mc}</span>` : "";
-      const cdBadge = ability.cd ? `<span class="skill-tag cd-tag">⏱ ${ability.cd}s</span>` : "";
-
+      const briefDesc = formatBriefDescription(ability.desc);
       return `
         <div class="tooltip-skill-item">
-          <img class="tooltip-skill-icon" src="${ability.img}" alt="${ability.name}" onerror="this.style.display='none'">
-          <div class="tooltip-skill-details">
-            <div class="tooltip-skill-title-row">
-              <span class="tooltip-skill-name">${ability.name}</span>
-            </div>
-            <div class="tooltip-skill-badges">
-              ${dmgBadge}
-              ${behaviorBadge}
-              ${mcBadge}
-              ${cdBadge}
-            </div>
-            <p class="tooltip-skill-desc">${ability.desc || "No description available."}</p>
+          <div class="tooltip-skill-title-row">
+            <img class="tooltip-skill-icon" src="${ability.img}" alt="${ability.name}" onerror="this.style.display='none'">
+            <span class="tooltip-skill-name">${ability.name}</span>
           </div>
+          <p class="tooltip-skill-desc">${briefDesc}</p>
         </div>
       `;
     }).join("");
@@ -106,24 +84,27 @@ function showHeroTooltip(hero, event) {
 
 function updateTooltipPosition(event) {
   if (!tooltipEl || tooltipEl.classList.contains("d-none")) return;
-  const padding = 14;
-  const tooltipWidth = tooltipEl.offsetWidth || 350;
-  const tooltipHeight = tooltipEl.offsetHeight || 300;
+  const padding = 12;
+  const tooltipWidth = tooltipEl.offsetWidth || 640;
+  const tooltipHeight = tooltipEl.offsetHeight || 105;
 
-  let left = event.clientX + 16;
-  let top = event.clientY + 12;
+  // center over cursor
+  let left = event.clientX - (tooltipWidth / 2);
 
-  // Flip horizontally if overflow right
-  if (left + tooltipWidth > window.innerWidth - padding) {
-    left = event.clientX - tooltipWidth - 14;
+  // position above
+  let top = event.clientY - tooltipHeight - 14;
+
+  // flip if near top
+  if (top < padding) {
+    top = event.clientY + 24;
   }
-  if (left < padding) left = padding;
 
-  // Flip vertically if overflow bottom
-  if (top + tooltipHeight > window.innerHeight - padding) {
-    top = window.innerHeight - tooltipHeight - padding;
+  // stay in bounds
+  if (left < padding) {
+    left = padding;
+  } else if (left + tooltipWidth > window.innerWidth - padding) {
+    left = window.innerWidth - tooltipWidth - padding;
   }
-  if (top < padding) top = padding;
 
   tooltipEl.style.left = `${left}px`;
   tooltipEl.style.top = `${top}px`;
@@ -153,9 +134,7 @@ function getUsedHeroMap() {
   return map;
 }
 
-// -------------------------------------------------------------
-// HEROES GALLERY RENDERING
-// -------------------------------------------------------------
+// 
 function renderHeroes() {
   if (!state.heroes || !state.heroes.length) return;
 
@@ -183,7 +162,13 @@ function renderHeroes() {
   $("heroCount").textContent = `${filtered.length} of ${state.heroes.length} heroes`;
 
   if (!filtered.length) {
-    heroGrid.innerHTML = `<div class="text-secondary p-3 text-center w-100">No heroes match the current filters.</div>`;
+    heroGrid.innerHTML = `
+      <div class="no-heroes-wrapper text-secondary p-4 w-100">
+        <i class="bi bi-search fs-2 mb-2 text-warning opacity-75"></i>
+        <div class="fs-6 fw-bold text-light mb-1">No matching heroes found</div>
+        <div class="small text-muted">Try adjusting your search query, role filter, or attribute category.</div>
+      </div>
+    `;
     return;
   }
 
@@ -237,16 +222,14 @@ function handleHeroSelection(hero) {
   }
 }
 
-// -------------------------------------------------------------
-// BOTTOM SLOTS RENDERING (Bans & Picks)
-// -------------------------------------------------------------
+// 
 function renderSlots() {
   const isRadiantTurn = state.activeTeam === "radiant";
   const isDireTurn = state.activeTeam === "dire";
   const isBanAction = state.actionType === "ban";
   const isPickAction = state.actionType === "pick";
 
-  // 1. Radiant Bans (7 slots)
+  // radiant bans
   const radBanContainer = $("radiantBanSlots");
   radBanContainer.innerHTML = Array.from({ length: 7 }, (_, i) => {
     const hero = state.radiantBans[i];
@@ -271,7 +254,7 @@ function renderSlots() {
     `;
   }).join("");
 
-  // 2. Dire Bans (7 slots)
+  // dire bans
   const direBanContainer = $("direBanSlots");
   direBanContainer.innerHTML = Array.from({ length: 7 }, (_, i) => {
     const hero = state.direBans[i];
@@ -296,7 +279,7 @@ function renderSlots() {
     `;
   }).join("");
 
-  // 3. Radiant Picks (5 slots)
+  // radiant picks
   const radPickContainer = $("radiantPickSlots");
   radPickContainer.innerHTML = Array.from({ length: 5 }, (_, i) => {
     const hero = state.radiant[i];
@@ -329,7 +312,7 @@ function renderSlots() {
     `;
   }).join("");
 
-  // 4. Dire Picks (5 slots)
+  // dire picks
   const direPickContainer = $("direPickSlots");
   direPickContainer.innerHTML = Array.from({ length: 5 }, (_, i) => {
     const hero = state.dire[i];
@@ -362,7 +345,7 @@ function renderSlots() {
     `;
   }).join("");
 
-  // Bind Remove buttons
+  // remove buttons
   document.querySelectorAll("[data-action='remove']").forEach(btn => {
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -375,7 +358,7 @@ function renderSlots() {
     });
   });
 
-  // Bind Empty Slot Click -> quick select turn
+  // slot click
   document.querySelectorAll("[data-target-slot]").forEach(slot => {
     slot.addEventListener("click", () => {
       hideHeroTooltip();
@@ -386,7 +369,7 @@ function renderSlots() {
     });
   });
 
-  // Tooltip for filled pick and ban slots
+  // slot tooltip
   document.querySelectorAll(".ban-slot.filled, .pick-slot.filled").forEach(slot => {
     const heroId = Number(slot.dataset.heroId);
     const hero = state.heroes.find(h => h.id === heroId);
@@ -398,9 +381,7 @@ function renderSlots() {
   });
 }
 
-// -------------------------------------------------------------
-// DRAFT ANALYSIS & SUGGESTIONS RENDERING
-// -------------------------------------------------------------
+// 
 function renderAnalysis() {
   const advantage = calculateDraftAdvantage(state.radiant, state.dire);
 
@@ -410,7 +391,7 @@ function renderAnalysis() {
   $("radiantAdvBar").style.width = `${advantage.radiantPct}%`;
   $("direAdvBar").style.width = `${advantage.direPct}%`;
 
-  // Suggestions for the active team
+  // active team suggestions
   const activeTeamName = state.activeTeam;
   const teamHeroes = activeTeamName === "radiant" ? state.radiant : state.dire;
   const enemyHeroes = activeTeamName === "radiant" ? state.dire : state.radiant;
@@ -472,7 +453,7 @@ function renderAnalysis() {
     });
   }
 
-  // Composition breakdown
+  // team composition
   const radEval = evaluateTeam(state.radiant);
   const direEval = evaluateTeam(state.dire);
 
@@ -510,9 +491,7 @@ function renderAnalysis() {
     formatTeamComp("Dire", direEval, "dire-text");
 }
 
-// -------------------------------------------------------------
-// HEADER & STATUS BAR UPDATE
-// -------------------------------------------------------------
+// 
 function renderHeaderStatus() {
   const activeBadge = $("activeTurnBadge");
   const draftPrompt = $("draftPrompt");
@@ -540,22 +519,16 @@ function renderHeaderStatus() {
     draftPhaseTag.textContent = "Custom Mode";
   }
 
-  // Active Team toggle buttons
-  $("radiantTurnBtn").classList.toggle("active", team === "radiant");
-  $("direTurnBtn").classList.toggle("active", team === "dire");
-
-  // Ban toggle button
+  // ban toggle
   const isBan = action === "ban";
   $("banToggleBtn").classList.toggle("ban-active", isBan);
   $("banToggleLabel").textContent = isBan ? "Ban Active" : "Pick Active";
 
-  // Undo button
+  // undo
   $("undoBtn").disabled = state.history.length === 0;
 }
 
-// -------------------------------------------------------------
-// SAVED DRAFTS
-// -------------------------------------------------------------
+// 
 function renderSavedDrafts() {
   state.savedDrafts = loadSavedDrafts();
   $("savedCount").textContent = state.savedDrafts.length;
@@ -584,9 +557,7 @@ function renderSavedDrafts() {
   });
 }
 
-// -------------------------------------------------------------
-// RENDER ALL
-// -------------------------------------------------------------
+// 
 function renderAll() {
   renderHeaderStatus();
   renderSlots();
@@ -595,11 +566,9 @@ function renderAll() {
   renderSavedDrafts();
 }
 
-// -------------------------------------------------------------
-// EVENT BINDINGS
-// -------------------------------------------------------------
+// 
 function bindEvents() {
-  // Mode selection
+  // mode select
   $("captainsMode").addEventListener("click", () => {
     state.mode = "captains";
     $("captainsMode").classList.add("active");
@@ -621,23 +590,13 @@ function bindEvents() {
     notify("Switched to Custom Draft.");
   });
 
-  // Team quick toggles
-  $("radiantTurnBtn").addEventListener("click", () => {
-    state.activeTeam = "radiant";
-    renderAll();
-  });
-  $("direTurnBtn").addEventListener("click", () => {
-    state.activeTeam = "dire";
-    renderAll();
-  });
-
-  // Pick/Ban quick toggle
+  // ban toggle
   $("banToggleBtn").addEventListener("click", () => {
     state.actionType = state.actionType === "pick" ? "ban" : "pick";
     renderAll();
   });
 
-  // Undo & Reset
+  // undo & reset
   $("undoBtn").addEventListener("click", () => {
     if (undoDraft()) {
       renderAll();
@@ -652,10 +611,11 @@ function bindEvents() {
     notify("Draft reset.");
   });
 
-  // Search & Attribute Filter Buttons
+  // search & filters
   $("heroSearch").addEventListener("input", renderHeroes);
   $("clearSearchBtn").addEventListener("click", () => {
     $("heroSearch").value = "";
+    $("heroSearch").focus();
     renderHeroes();
   });
 
@@ -670,7 +630,7 @@ function bindEvents() {
     });
   });
 
-  // Save Draft
+  // save draft
   $("saveDraftBtn").addEventListener("click", () => {
     if (!state.radiant.length && !state.dire.length && !state.radiantBans.length && !state.direBans.length) {
       notify("Select at least one hero before saving draft.");
@@ -693,7 +653,7 @@ function bindEvents() {
     notify("Draft saved successfully.");
   });
 
-  // Compare Drafts Modal
+  // compare modal
   $("compareDraftsBtn").addEventListener("click", () => {
     const drafts = loadSavedDrafts();
     const modalBody = $("compareModalBody");
@@ -733,36 +693,83 @@ function bindEvents() {
   });
 }
 
-// -------------------------------------------------------------
-// INITIALIZE
-// -------------------------------------------------------------
+// 
+function setApiProgress(percent, title, detail, step) {
+  const p = Math.max(0, Math.min(100, Math.round(percent)));
+  const bar = $("apiProgressBar");
+  const pct = $("apiLoadingPercent");
+  const ttl = $("apiLoadingText");
+  const det = $("apiLoadingDetails");
+  const stp = $("apiLoadingStep");
+
+  if (bar) {
+    bar.style.width = `${p}%`;
+    bar.setAttribute("aria-valuenow", p);
+    if (p >= 100) {
+      bar.classList.remove("progress-bar-animated");
+      bar.classList.add("bg-success");
+    } else {
+      bar.classList.remove("bg-success", "bg-danger");
+      bar.classList.add("bg-warning", "progress-bar-animated");
+    }
+  }
+  if (pct) pct.textContent = `${p}%`;
+  if (ttl && title) ttl.textContent = title;
+  if (det && detail) det.textContent = detail;
+  if (stp && step) stp.textContent = step;
+}
+
 async function initialize() {
   bindEvents();
   renderAll();
 
+  setApiProgress(10, "Connecting to OpenDota API...", "Downloading hero statistics...", "1 of 2: Hero Roster");
+
   try {
-    const result = await fetchHeroStats();
+    const result = await fetchHeroStats({
+      onProgress: (pct, msg) => {
+        const overall = Math.round(pct * 0.55);
+        setApiProgress(overall, "Connecting to OpenDota API...", msg, "1 of 2: Hero Roster");
+      }
+    });
     state.heroes = result.data.sort((a, b) => a.localized_name.localeCompare(b.localized_name));
-    $("apiStatus").classList.add("online");
-    $("apiStatus").innerHTML = `<span class="status-dot"></span><span>${result.cached ? "Cached Data" : "OpenDota Connected"}</span>`;
     $("heroError").classList.add("d-none");
+
+    setApiProgress(60, "Hero Roster Loaded", `${state.heroes.length} heroes ready`, "2 of 2: Abilities");
+
+    // fetch abilities
+    try {
+      const abilitiesResult = await fetchHeroAbilitiesMap({
+        onProgress: (pct, msg) => {
+          const overall = 60 + Math.round(pct * 0.4);
+          setApiProgress(overall, "Downloading Spells & Abilities...", msg, "2 of 2: Abilities");
+        }
+      });
+      state.heroAbilitiesMap = abilitiesResult.data;
+    } catch (error) {
+      console.warn("Hero abilities metadata could not be fetched:", error);
+    }
+
+    setApiProgress(100, "Draft Arena Ready!", "Launching analytics engine...", "Complete");
+    await new Promise(r => setTimeout(r, 220));
+
     renderAll();
   } catch (error) {
     console.error("OpenDota error:", error);
-    $("apiStatus").classList.add("offline");
-    $("apiStatus").innerHTML = `<span class="status-dot"></span><span>API Offline</span>`;
+    const bar = $("apiProgressBar");
+    if (bar) {
+      bar.classList.remove("bg-warning", "progress-bar-animated");
+      bar.classList.add("bg-danger");
+      bar.style.width = "100%";
+    }
+    if ($("apiLoadingPercent")) $("apiLoadingPercent").textContent = "Error";
+    if ($("apiLoadingText")) $("apiLoadingText").textContent = "API Connection Failed";
+    if ($("apiLoadingDetails")) $("apiLoadingDetails").textContent = error.message;
+
     $("heroGrid").innerHTML = `<div class="text-secondary p-3 text-center w-100">Hero roster could not be loaded.</div>`;
     $("heroError").textContent = `Failed to load OpenDota hero data: ${error.message}.`;
     $("heroError").classList.remove("d-none");
     $("heroCount").textContent = "0 heroes";
-  }
-
-  // Fetch full hero abilities for hover tooltips
-  try {
-    const abilitiesResult = await fetchHeroAbilitiesMap();
-    state.heroAbilitiesMap = abilitiesResult.data;
-  } catch (error) {
-    console.warn("Hero abilities metadata could not be fetched:", error);
   }
 }
 

@@ -1,7 +1,7 @@
 import { state, snapshotDraft, restoreDraft } from "./state.js";
 
 export const CAPTAINS_MODE_SEQUENCE = [
-  // Phase 1 - 4 Bans each
+  // phase 1 bans
   { team: "radiant", type: "ban", phase: 1, label: "Radiant Ban 1" },
   { team: "dire",    type: "ban", phase: 1, label: "Dire Ban 1" },
   { team: "radiant", type: "ban", phase: 1, label: "Radiant Ban 2" },
@@ -11,29 +11,29 @@ export const CAPTAINS_MODE_SEQUENCE = [
   { team: "radiant", type: "ban", phase: 1, label: "Radiant Ban 4" },
   { team: "dire",    type: "ban", phase: 1, label: "Dire Ban 4" },
 
-  // Phase 1 - 2 Picks each
+  // phase 1 picks
   { team: "radiant", type: "pick", phase: 1, label: "Radiant Pick 1" },
   { team: "dire",    type: "pick", phase: 1, label: "Dire Pick 1" },
   { team: "dire",    type: "pick", phase: 1, label: "Dire Pick 2" },
   { team: "radiant", type: "pick", phase: 1, label: "Radiant Pick 2" },
 
-  // Phase 2 - 2 Bans each
+  // phase 2 bans
   { team: "radiant", type: "ban", phase: 2, label: "Radiant Ban 5" },
   { team: "dire",    type: "ban", phase: 2, label: "Dire Ban 5" },
   { team: "radiant", type: "ban", phase: 2, label: "Radiant Ban 6" },
   { team: "dire",    type: "ban", phase: 2, label: "Dire Ban 6" },
 
-  // Phase 2 - 2 Picks each
+  // phase 2 picks
   { team: "radiant", type: "pick", phase: 2, label: "Radiant Pick 3" },
   { team: "dire",    type: "pick", phase: 2, label: "Dire Pick 3" },
   { team: "radiant", type: "pick", phase: 2, label: "Radiant Pick 4" },
   { team: "dire",    type: "pick", phase: 2, label: "Dire Pick 4" },
 
-  // Phase 3 - 1 Ban each
+  // phase 3 bans
   { team: "radiant", type: "ban", phase: 3, label: "Radiant Ban 7" },
   { team: "dire",    type: "ban", phase: 3, label: "Dire Ban 7" },
 
-  // Phase 3 - Final Pick each
+  // phase 3 picks
   { team: "dire",    type: "pick", phase: 3, label: "Dire Pick 5" },
   { team: "radiant", type: "pick", phase: 3, label: "Radiant Pick 5" }
 ];
@@ -95,7 +95,7 @@ export function selectHero(hero) {
     state.bans.push(banObj);
   }
 
-  // Advance turn in Captains Mode
+  // next turn
   if (state.mode === "captains") {
     state.cmTurn++;
     if (state.cmTurn < CAPTAINS_MODE_SEQUENCE.length) {
@@ -122,7 +122,7 @@ export function removeDraftHero(team, type, index) {
       state.bans = state.bans.filter(b => b.id !== removed.id);
     }
   }
-  // If in Captain's Mode, update turn index to match count of actions
+  // sync cm turn index
   if (state.mode === "captains") {
     syncCMTurn();
   }

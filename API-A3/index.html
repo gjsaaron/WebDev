@@ -1,246 +1,306 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0a0c10">
-  <title>Dota 2 Draft Simulator & Analysis</title>
+  <title>Dota 2 Draft Simulator &amp; Analysis</title>
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="assets/css/main.css">
 </head>
+
 <body class="wireframe-theme">
-  <!-- Top Navigation & Global Controls -->
-  <header class="app-header">
-    <div class="header-inner">
-      <div class="brand-group">
-        <a class="brand-title" href="#">
-          <i class="bi bi-crosshair2 me-2"></i>DRAFT ARENA
-        </a>
-        <span class="brand-subtitle d-none d-xxl-inline">DOTA 2 DRAFT SIMULATOR &amp; ANALYSIS</span>
-      </div>
+  <!-- header -->
+  <div class="container-fluid bg-primary p-0">
+    <div class="row m-0">
+      <div class="col p-0">
+        <header class="app-header border-0">
+          <div class="header-inner">
+            <div class="brand-group">
+              <a class="brand-title" href="#">
+                <img src="assets/img/dotaLogo.webp" alt="Dota 2 Logo" class="brand-logo me-2">DOTA DRAFT
+              </a>
+              <span class="brand-subtitle d-none d-xxl-inline">DOTA 2 DRAFT SIMULATOR &amp;
+                ANALYSIS</span>
+            </div>
 
-      <!-- Turn & Draft Status in Header -->
-      <div class="header-turn-status" id="headerTurnStatus">
-        <span class="turn-indicator-badge radiant" id="activeTurnBadge">RADIANT BAN 1</span>
-        <span class="turn-desc d-none d-lg-inline" id="draftPrompt">Captain's Mode · Step 1 of 24</span>
-      </div>
 
-      <!-- Quick Action Controls -->
-      <div class="header-actions">
-        <div class="btn-group btn-group-sm mode-toggle-group" role="group" aria-label="Draft mode">
-          <button class="btn btn-mode active" id="captainsMode" type="button" title="Standard 24-step competitive pick/ban sequence">Captain's Mode</button>
-          <button class="btn btn-mode" id="customMode" type="button" title="Free custom picking and banning">Custom Draft</button>
-        </div>
+            <div class="header-turn-status" id="headerTurnStatus">
+              <span class="turn-indicator-badge radiant" id="activeTurnBadge">RADIANT BAN 1</span>
+              <span class="turn-desc d-none d-lg-inline" id="draftPrompt">Captain's Mode · Step 1 of
+                24</span>
+            </div>
 
-        <div class="btn-group btn-group-sm team-toggle-group" role="group" aria-label="Active team">
-          <button class="btn btn-team-radiant active" id="radiantTurnBtn" type="button">Radiant</button>
-          <button class="btn btn-team-dire" id="direTurnBtn" type="button">Dire</button>
-        </div>
 
-        <button class="btn btn-sm btn-action-toggle" id="banToggleBtn" type="button" title="Toggle Pick or Ban">
-          <i class="bi bi-slash-circle me-1"></i><span id="banToggleLabel">Ban Mode</span>
-        </button>
+            <div class="header-actions">
+              <div class="btn-group btn-group-sm mode-toggle-group" role="group" aria-label="Draft mode">
+                <button class="btn btn-mode active" id="captainsMode" type="button"
+                  title="Standard 24-step competitive pick/ban sequence">Captain's Mode</button>
+                <button class="btn btn-mode" id="customMode" type="button"
+                  title="Free custom picking and banning">Custom Draft</button>
+              </div>
 
-        <button class="btn btn-sm btn-control" id="undoBtn" disabled title="Undo last action">
-          <i class="bi bi-arrow-counterclockwise"></i><span class="d-none d-xl-inline ms-1">Undo</span>
-        </button>
-        <button class="btn btn-sm btn-control" id="resetBtn" title="Reset current draft">
-          <i class="bi bi-arrow-repeat"></i><span class="d-none d-xl-inline ms-1">Reset</span>
-        </button>
-        <button class="btn btn-sm btn-control btn-save" id="saveDraftBtn" title="Save draft">
-          <i class="bi bi-bookmark-plus"></i><span class="d-none d-xl-inline ms-1">Save</span>
-        </button>
+              <button class="btn btn-sm btn-action-toggle" id="banToggleBtn" type="button" title="Toggle Pick or Ban">
+                <i class="bi bi-slash-circle me-1"></i><span id="banToggleLabel">Ban Mode</span>
+              </button>
 
-        <span class="api-status" id="apiStatus"><span class="status-dot"></span><span class="d-none d-sm-inline">Connecting</span></span>
+              <button class="btn btn-sm btn-control" id="undoBtn" disabled title="Undo last action">
+                <i class="bi bi-arrow-counterclockwise"></i><span class="d-none d-xl-inline ms-1">Undo</span>
+              </button>
+              <button class="btn btn-sm btn-control" id="resetBtn" title="Reset current draft">
+                <i class="bi bi-arrow-repeat"></i><span class="d-none d-xl-inline ms-1">Reset</span>
+              </button>
+              <button class="btn btn-sm btn-control btn-save" id="saveDraftBtn" title="Save draft">
+                <i class="bi bi-bookmark-plus"></i><span class="d-none d-xl-inline ms-1">Save</span>
+              </button>
+            </div>
+          </div>
+        </header>
       </div>
     </div>
-  </header>
+  </div>
 
-  <!-- Main Blueprint / Wireframe Grid Layout (Utilizing Bootstrap Row, Col, Card) -->
-  <main class="container-fluid wireframe-workspace p-2 d-flex flex-column">
-    <!-- TOP ROW: HEROES GALLERY (Left Col) & DRAFT ANALYSIS/SUGGESTIONS (Right Col) -->
-    <div class="row g-2 wireframe-top-row flex-grow-1">
-      <!-- HEROES GALLERY COLUMN -->
-      <div class="col-12 col-lg-8 col-xl-9 gallery-col d-flex flex-column h-100">
-        <div class="card wireframe-box gallery-box flex-grow-1 h-100">
-          <div class="card-header wireframe-header">
-            <div class="row g-2 align-items-center w-100 m-0">
-              <div class="col-auto p-0">
-                <h2 class="card-title wireframe-title mb-0">HEROES GALLERY</h2>
-              </div>
-              <div class="col-auto">
-                <div class="attr-filters" id="attrFilters">
-                  <button class="attr-btn active" data-attr="all" type="button">All</button>
-                  <button class="attr-btn str" data-attr="str" type="button" title="Strength"><span class="attr-icon str-icon"></span> STR</button>
-                  <button class="attr-btn agi" data-attr="agi" type="button" title="Agility"><span class="attr-icon agi-icon"></span> AGI</button>
-                  <button class="attr-btn int" data-attr="int" type="button" title="Intelligence"><span class="attr-icon int-icon"></span> INT</button>
-                  <button class="attr-btn all-attr" data-attr="all-attr" type="button" title="Universal"><span class="attr-icon uni-icon"></span> UNI</button>
-                </div>
-              </div>
-              <div class="col-auto">
-                <select class="form-select form-select-sm filter-select" id="roleFilter" aria-label="Filter by role">
-                  <option value="all">All Roles</option>
-                  <option value="carry">Carry</option>
-                  <option value="support">Support</option>
-                  <option value="initiator">Initiator</option>
-                  <option value="disabler">Disabler</option>
-                  <option value="durable">Durable</option>
-                  <option value="nuker">Nuker</option>
-                  <option value="pusher">Pusher</option>
-                  <option value="escape">Escape</option>
-                </select>
-              </div>
-              <div class="col">
-                <div class="search-wrap">
-                  <i class="bi bi-search search-icon"></i>
-                  <input type="search" class="hero-search-input w-100" id="heroSearch" placeholder="Search hero..." autocomplete="off">
-                  <button class="clear-search-btn d-none" id="clearSearchBtn" type="button"><i class="bi bi-x"></i></button>
-                </div>
-              </div>
-              <div class="col-auto p-0">
-                <span class="hero-counter" id="heroCount">Loading...</span>
-              </div>
-            </div>
-          </div>
+  <!-- gallery & suggestions -->
+  <div class="container-fluid px-2 py-0">
+    <div class="row g-0">
+      <div class="col-12">
+        <div class="row g-0">
 
-          <!-- Hero Grid Body Card -->
-          <div class="card-body wireframe-body gallery-body p-2">
-            <div id="heroGrid" class="hero-gallery-grid">
-              <div class="loading-state">
-                <div class="spinner-border spinner-border-sm text-warning" role="status"></div>
-                <span class="ms-2">Loading hero roster from OpenDota...</span>
-              </div>
-            </div>
-            <div id="heroError" class="alert alert-warning d-none m-3" role="alert"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- DRAFT ANALYSIS/SUGGESTIONS COLUMN -->
-      <div class="col-12 col-lg-4 col-xl-3 analysis-col d-flex flex-column h-100">
-        <div class="card wireframe-box analysis-box flex-grow-1 h-100">
-          <div class="card-header wireframe-header d-flex justify-content-between align-items-center">
-            <h2 class="card-title wireframe-title mb-0">DRAFT ANALYSIS/SUGGESTIONS</h2>
-            <span class="draft-phase-tag" id="draftPhaseTag">Phase 1 Bans</span>
-          </div>
-
-          <div class="card-body wireframe-body analysis-body p-2">
-            <!-- Draft Advantage Gauge Card -->
-            <div class="card sub-card analysis-panel-section mb-2">
-              <div class="card-body p-2">
-                <div class="section-subhead">WIN PROJECTION &amp; ADVANTAGE</div>
-                <div class="advantage-container">
-                  <div class="advantage-header">
-                    <span class="team-adv-val radiant-text" id="radiantAdvPct">50%</span>
-                    <span class="adv-label" id="advantageLabel">Even Matchup</span>
-                    <span class="team-adv-val dire-text" id="direAdvPct">50%</span>
+          <div class="col-8">
+            <div class="card mt-0 wireframe-box gallery-box" style="height: 48vh; max-height: 48vh; min-height: 48vh;">
+              <div class="card-header wireframe-header">
+                <div class="row g-2 align-items-center w-100 m-0">
+                  <div class="col-auto p-0">
+                    <h2 class="card-title wireframe-title mb-0">HEROES GALLERY</h2>
                   </div>
-                  <div class="advantage-bar-track">
-                    <div class="adv-bar-fill radiant-bar" id="radiantAdvBar" style="width: 50%"></div>
-                    <div class="adv-bar-fill dire-bar" id="direAdvBar" style="width: 50%"></div>
+                  <div class="col-auto">
+                    <div class="attr-filters" id="attrFilters">
+                      <button class="attr-btn active" data-attr="all" type="button">All</button>
+                      <button class="attr-btn str" data-attr="str" type="button" title="Strength"><span
+                          class="attr-icon str-icon"></span> STR</button>
+                      <button class="attr-btn agi" data-attr="agi" type="button" title="Agility"><span
+                          class="attr-icon agi-icon"></span> AGI</button>
+                      <button class="attr-btn int" data-attr="int" type="button" title="Intelligence"><span
+                          class="attr-icon int-icon"></span>
+                        INT</button>
+                      <button class="attr-btn all-attr" data-attr="all-attr" type="button" title="Universal"><span
+                          class="attr-icon uni-icon"></span> UNI</button>
+                    </div>
+                  </div>
+                  <div class="col-auto">
+                    <select class="form-select form-select-sm filter-select" id="roleFilter"
+                      aria-label="Filter by role">
+                      <option value="all">All Roles</option>
+                      <option value="carry">Carry</option>
+                      <option value="support">Support</option>
+                      <option value="initiator">Initiator</option>
+                      <option value="disabler">Disabler</option>
+                      <option value="durable">Durable</option>
+                      <option value="nuker">Nuker</option>
+                      <option value="pusher">Pusher</option>
+                      <option value="escape">Escape</option>
+                    </select>
+                  </div>
+                  <div class="col">
+                    <div class="search-wrap">
+                      <i class="bi bi-search search-icon"></i>
+                      <input type="text" class="hero-search-input w-100" id="heroSearch" placeholder="Search hero..."
+                        autocomplete="off">
+                      <button class="clear-search-btn d-none" id="clearSearchBtn" type="button"><i
+                          class="bi bi-x"></i></button>
+                    </div>
+                  </div>
+                  <div class="col-auto p-0">
+                    <span class="hero-counter" id="heroCount">Loading...</span>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Dynamic Hero Suggestions Card -->
-            <div class="card sub-card analysis-panel-section mb-2">
-              <div class="card-body p-2">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                  <div class="section-subhead mb-0">RECOMMENDED HEROES</div>
-                  <span class="active-team-tag" id="suggestionTeamTag">FOR RADIANT</span>
+
+              <div class="card-body wireframe-body gallery-body p-2">
+                <div id="heroGrid" class="hero-gallery-grid">
+                  <div id="apiLoadingContainer" class="api-loading-wrapper w-100 p-4">
+                    <div class="card api-loading-card p-4 w-100">
+                      <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="d-flex align-items-center gap-2">
+                          <i class="bi bi-cloud-arrow-down-fill text-warning fs-5" id="apiLoadingIcon"></i>
+                          <span class="api-loading-title fw-bold" id="apiLoadingText">Connecting to OpenDota
+                            API...</span>
+                        </div>
+                        <span class="api-loading-percentage fw-bold text-warning fs-5" id="apiLoadingPercent">0%</span>
+                      </div>
+                      <div class="progress api-progress-bar-wrap mb-2" role="progressbar"
+                        aria-label="API Loading Progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" id="apiProgressBar"
+                          style="width: 0%;"></div>
+                      </div>
+                      <div class="api-loading-meta d-flex justify-content-between">
+                        <span id="apiLoadingDetails">Initializing connection...</span>
+                        <span id="apiLoadingStep">Hero Roster</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div class="suggestions-list" id="suggestionsContainer">
-                  <div class="suggestion-placeholder">Suggestions will appear as you pick or ban heroes.</div>
-                </div>
+                <div id="heroError" class="alert alert-warning d-none m-3" role="alert"></div>
               </div>
             </div>
+          </div>
 
-            <!-- Lineup Role Breakdown & Warnings Card -->
-            <div class="card sub-card analysis-panel-section mb-2">
-              <div class="card-body p-2">
-                <div class="section-subhead">TEAM COMPOSITION &amp; SYNERGY</div>
-                <div id="compositionBreakdown" class="composition-breakdown">
-                  <div class="small text-secondary">Pick heroes to generate synergy insights and vulnerability warnings.</div>
-                </div>
+
+          <div class="col-4">
+            <div class="card mt-0 wireframe-box analysis-box" style="height: 48vh; max-height: 48vh; min-height: 48vh;">
+              <div class="card-header wireframe-header d-flex justify-content-between align-items-center">
+                <h2 class="card-title wireframe-title mb-0">DRAFT SUGGESTION</h2>
+                <span class="draft-phase-tag" id="draftPhaseTag">Phase 1 Bans</span>
               </div>
-            </div>
 
-            <!-- Saved Drafts Drawer / History Card -->
-            <div class="card sub-card analysis-panel-section saved-drafts-section">
-              <div class="card-body p-2">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                  <div class="section-subhead mb-0">SAVED DRAFTS</div>
-                  <span class="badge saved-badge" id="savedCount">0</span>
+              <div class="card-body wireframe-body analysis-body p-2">
+
+                <div class="card sub-card analysis-panel-section mb-2">
+                  <div class="card-body p-2">
+                    <div class="section-subhead">WIN PROJECTION &amp; ADVANTAGE</div>
+                    <div class="advantage-container">
+                      <div class="advantage-header">
+                        <span class="team-adv-val radiant-text" id="radiantAdvPct">50%</span>
+                        <span class="adv-label" id="advantageLabel">Even Matchup</span>
+                        <span class="team-adv-val dire-text" id="direAdvPct">50%</span>
+                      </div>
+                      <div class="advantage-bar-track">
+                        <div class="adv-bar-fill radiant-bar" id="radiantAdvBar" style="width: 50%"></div>
+                        <div class="adv-bar-fill dire-bar" id="direAdvBar" style="width: 50%">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div id="savedDraftPreview" class="saved-preview-list small text-secondary">No saved drafts yet.</div>
-                <button class="btn btn-compare-drafts w-100 mt-2" id="compareDraftsBtn" type="button">
-                  <i class="bi bi-layout-split me-1"></i>Compare Saved Drafts
-                </button>
+
+
+                <div class="card sub-card analysis-panel-section mb-2">
+                  <div class="card-body p-2">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                      <div class="section-subhead mb-0">RECOMMENDED HEROES</div>
+                      <span class="active-team-tag" id="suggestionTeamTag">FOR RADIANT</span>
+                    </div>
+                    <div class="suggestions-list" id="suggestionsContainer">
+                      <div class="suggestion-placeholder">Suggestions will appear as you pick or
+                        ban heroes.</div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="card sub-card analysis-panel-section mb-2">
+                  <div class="card-body p-2">
+                    <div class="section-subhead">TEAM COMPOSITION &amp; SYNERGY</div>
+                    <div id="compositionBreakdown" class="composition-breakdown">
+                      <div class="small text-secondary">Pick heroes to generate synergy insights
+                        and vulnerability warnings.</div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="card sub-card analysis-panel-section saved-drafts-section">
+                  <div class="card-body p-2">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                      <div class="section-subhead mb-0">SAVED DRAFTS</div>
+                      <span class="badge saved-badge" id="savedCount">0</span>
+                    </div>
+                    <div id="savedDraftPreview" class="saved-preview-list small text-secondary">No
+                      saved drafts yet.</div>
+                    <button class="btn btn-compare-drafts w-100 mt-2" id="compareDraftsBtn" type="button">
+                      <i class="bi bi-layout-split me-1"></i>Compare Saved Drafts
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- BOTTOM ROW: RADIANT (Bans & Picks) & DIRE (Bans & Picks) -->
-    <div class="row g-2 wireframe-bottom-row flex-shrink-0">
-      <!-- RADIANT COLUMN -->
-      <div class="col-12 col-lg-6 team-side radiant-side d-flex flex-column gap-2">
-        <!-- RADIANT BANS (7 Slots) CARD -->
-        <div class="card wireframe-box bans-box radiant-bans-box" id="radiantBansBox">
-          <div class="wireframe-box-label radiant-label">RADIANT BANS</div>
-          <div class="card-body p-2">
-            <div class="row g-1 ban-slots-row flex-nowrap w-100 m-0" id="radiantBanSlots">
-              <!-- 7 Ban Slots dynamically rendered into .col -->
+  <!-- bans -->
+  <div class="container-fluid px-2 py-0">
+    <div class="row g-0">
+      <div class="col-12">
+        <div class="row g-0">
+
+          <div class="col-6">
+            <div class="card mt-1 wireframe-box bans-box radiant-bans-box" id="radiantBansBox"
+              style="min-height:11vh ;">
+              <div class="wireframe-box-label radiant-label">RADIANT BANS</div>
+              <div class="card-body p-2">
+                <div class="row g-1 ban-slots-row flex-nowrap w-100 m-0" id="radiantBanSlots">
+                  <!-- 7 Radiant Ban Slots dynamically rendered -->
+                </div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- RADIANT PICKS (5 Slots) CARD -->
-        <div class="card wireframe-box picks-box radiant-picks-box" id="radiantPicksBox">
-          <div class="wireframe-box-label radiant-label">RADIANT PICKS</div>
-          <div class="card-body p-2">
-            <div class="row g-2 pick-slots-row flex-nowrap w-100 m-0" id="radiantPickSlots">
-              <!-- 5 Pick Slots dynamically rendered into .col -->
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- DIRE COLUMN -->
-      <div class="col-12 col-lg-6 team-side dire-side d-flex flex-column gap-2">
-        <!-- DIRE BANS (7 Slots) CARD -->
-        <div class="card wireframe-box bans-box dire-bans-box" id="direBansBox">
-          <div class="wireframe-box-label dire-label">DIRE BANS</div>
-          <div class="card-body p-2">
-            <div class="row g-1 ban-slots-row flex-nowrap w-100 m-0" id="direBanSlots">
-              <!-- 7 Ban Slots dynamically rendered into .col -->
-            </div>
-          </div>
-        </div>
-
-        <!-- DIRE PICKS (5 Slots) CARD -->
-        <div class="card wireframe-box picks-box dire-picks-box" id="direPicksBox">
-          <div class="wireframe-box-label dire-label">DIRE PICKS</div>
-          <div class="card-body p-2">
-            <div class="row g-2 pick-slots-row flex-nowrap w-100 m-0" id="direPickSlots">
-              <!-- 5 Pick Slots dynamically rendered into .col -->
+          <div class="col-6">
+            <div class="card mt-1 wireframe-box bans-box dire-bans-box" id="direBansBox" style="min-height:11vh ;">
+              <div class="wireframe-box-label dire-label">DIRE BANS</div>
+              <div class="card-body p-2">
+                <div class="row g-1 ban-slots-row flex-nowrap w-100 m-0" id="direBanSlots">
+                  <!-- 7 Dire Ban Slots dynamically rendered -->
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </main>
+  </div>
 
-  <!-- Hero Skills Hover Tooltip -->
+  <!-- picks -->
+  <div class="container-fluid px-2 py-0">
+    <div class="row g-0">
+      <div class="col-12">
+        <div class="row g-0">
+
+          <div class="col-6">
+            <div class="card mt-1 wireframe-box picks-box radiant-picks-box" id="radiantPicksBox"
+              style="min-height:20vh ;">
+              <div class="wireframe-box-label radiant-label">RADIANT PICKS</div>
+              <div class="card-body p-2">
+                <div class="row g-2 pick-slots-row flex-nowrap w-100 m-0" id="radiantPickSlots">
+                  <!-- 5 Radiant Pick Slots dynamically rendered -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-6">
+            <div class="card mt-1 wireframe-box picks-box dire-picks-box" id="direPicksBox" style="min-height:20vh ;">
+              <div class="wireframe-box-label dire-label">DIRE PICKS</div>
+              <div class="card-body p-2">
+                <div class="row g-2 pick-slots-row flex-nowrap w-100 m-0" id="direPickSlots">
+                  <!-- 5 Dire Pick Slots dynamically rendered -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- tooltip -->
   <div id="heroSkillTooltip" class="card hero-skill-tooltip d-none" role="tooltip">
-    <div class="card-header tooltip-hero-header d-flex align-items-center gap-2 p-2">
+    <div class="card-header tooltip-hero-header d-none d-flex align-items-center gap-2 p-2">
       <img id="tooltipHeroImg" class="tooltip-hero-avatar rounded" src="" alt="">
       <div class="min-w-0 flex-grow-1">
         <div class="d-flex align-items-center gap-2">
@@ -251,26 +311,28 @@
       </div>
     </div>
     <div class="card-body p-2 tooltip-skills-body" id="tooltipSkillsList">
-      <!-- Skills populated dynamically -->
+
     </div>
   </div>
 
-  <!-- Notification Toast -->
+  <!-- toast -->
   <div class="toast-container position-fixed bottom-0 end-0 p-3">
     <div id="appToast" class="toast text-bg-dark border-secondary" role="status" aria-live="polite" aria-atomic="true">
       <div class="d-flex">
         <div class="toast-body" id="toastMessage">Ready.</div>
-        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+          aria-label="Close"></button>
       </div>
     </div>
   </div>
 
-  <!-- Compare Saved Drafts Modal -->
+  <!-- compare modal -->
   <div class="modal fade" id="compareModal" tabindex="-1" aria-labelledby="compareModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content modal-dark">
         <div class="modal-header">
-          <h5 class="modal-title" id="compareModalLabel"><i class="bi bi-layout-split me-2"></i>Saved Draft Comparison</h5>
+          <h5 class="modal-title" id="compareModalLabel"><i class="bi bi-layout-split me-2"></i>Saved Draft
+            Comparison</h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body" id="compareModalBody">
@@ -280,7 +342,20 @@
     </div>
   </div>
 
+  <!-- scripts -->
+  <script>
+    if (window.location.protocol === "file:") {
+      document.addEventListener("DOMContentLoaded", () => {
+        const warn = document.createElement("div");
+        warn.className = "alert alert-warning text-center m-3 py-2";
+        warn.style.zIndex = "9999";
+        warn.innerHTML = `<strong>Protocol Notice:</strong> You opened this file directly via <code>file://</code>. Browsers restrict API and JavaScript module requests over local files. Start Apache in XAMPP and visit <a href="http://localhost/WebDev/API-A3/test.html" class="alert-link">http://localhost/WebDev/API-A3/test.html</a> for full functionality.`;
+        document.body.prepend(warn);
+      });
+    }
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script type="module" src="assets/js/app.js"></script>
 </body>
+
 </html>
