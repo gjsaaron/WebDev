@@ -177,66 +177,64 @@
                 </button>
               </div>
 
-              <!-- suggestion panel: collapsed on mobile, visible on desktop -->
-              <div class="collapse d-lg-block" id="analysisBodyCollapse">
-                <div class="card-body wireframe-body analysis-body p-2">
+              <!-- suggestion panel: collapsed on mobile, visible & scrolling on desktop -->
+              <div class="card-body wireframe-body analysis-body collapse d-lg-flex p-2" id="analysisBodyCollapse">
 
-                  <div class="card sub-card analysis-panel-section mb-2">
-                    <div class="card-body p-2">
-                      <div class="section-subhead">WIN PROJECTION &amp; ADVANTAGE</div>
-                      <div class="advantage-container">
-                        <div class="advantage-header">
-                          <span class="team-adv-val radiant-text" id="radiantAdvPct">50%</span>
-                          <span class="adv-label" id="advantageLabel">Even Matchup</span>
-                          <span class="team-adv-val dire-text" id="direAdvPct">50%</span>
-                        </div>
-                        <div class="advantage-bar-track">
-                          <div class="adv-bar-fill radiant-bar" id="radiantAdvBar" style="width: 50%"></div>
-                          <div class="adv-bar-fill dire-bar" id="direAdvBar" style="width: 50%">
-                          </div>
+                <div class="card sub-card analysis-panel-section mb-2">
+                  <div class="card-body p-2">
+                    <div class="section-subhead">WIN PROJECTION &amp; ADVANTAGE</div>
+                    <div class="advantage-container">
+                      <div class="advantage-header">
+                        <span class="team-adv-val radiant-text" id="radiantAdvPct">50%</span>
+                        <span class="adv-label" id="advantageLabel">Even Matchup</span>
+                        <span class="team-adv-val dire-text" id="direAdvPct">50%</span>
+                      </div>
+                      <div class="advantage-bar-track">
+                        <div class="adv-bar-fill radiant-bar" id="radiantAdvBar" style="width: 50%"></div>
+                        <div class="adv-bar-fill dire-bar" id="direAdvBar" style="width: 50%">
                         </div>
                       </div>
                     </div>
                   </div>
+                </div>
 
 
-                  <div class="card sub-card analysis-panel-section mb-2">
-                    <div class="card-body p-2">
-                      <div class="d-flex justify-content-between align-items-center mb-2">
-                        <div class="section-subhead mb-0">RECOMMENDED HEROES</div>
-                        <span class="active-team-tag" id="suggestionTeamTag">FOR RADIANT</span>
-                      </div>
-                      <div class="suggestions-list" id="suggestionsContainer">
-                        <div class="suggestion-placeholder">Suggestions will appear as you pick or
-                          ban heroes.</div>
-                      </div>
+                <div class="card sub-card analysis-panel-section mb-2">
+                  <div class="card-body p-2">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                      <div class="section-subhead mb-0">RECOMMENDED HEROES</div>
+                      <span class="active-team-tag" id="suggestionTeamTag">FOR RADIANT</span>
+                    </div>
+                    <div class="suggestions-list" id="suggestionsContainer">
+                      <div class="suggestion-placeholder">Suggestions will appear as you pick or
+                        ban heroes.</div>
                     </div>
                   </div>
+                </div>
 
 
-                  <div class="card sub-card analysis-panel-section mb-2">
-                    <div class="card-body p-2">
-                      <div class="section-subhead">TEAM COMPOSITION &amp; SYNERGY</div>
-                      <div id="compositionBreakdown" class="composition-breakdown">
-                        <div class="small text-secondary">Pick heroes to generate synergy insights
-                          and vulnerability warnings.</div>
-                      </div>
+                <div class="card sub-card analysis-panel-section mb-2">
+                  <div class="card-body p-2">
+                    <div class="section-subhead">TEAM COMPOSITION &amp; SYNERGY</div>
+                    <div id="compositionBreakdown" class="composition-breakdown">
+                      <div class="small text-secondary">Pick heroes to generate synergy insights
+                        and vulnerability warnings.</div>
                     </div>
                   </div>
+                </div>
 
 
-                  <div class="card sub-card analysis-panel-section saved-drafts-section">
-                    <div class="card-body p-2">
-                      <div class="d-flex justify-content-between align-items-center mb-2">
-                        <div class="section-subhead mb-0">SAVED DRAFTS</div>
-                        <span class="badge saved-badge" id="savedCount">0</span>
-                      </div>
-                      <div id="savedDraftPreview" class="saved-preview-list small text-secondary">No
-                        saved drafts yet.</div>
-                      <button class="btn btn-compare-drafts w-100 mt-2" id="compareDraftsBtn" type="button">
-                        <i class="bi bi-layout-split me-1"></i>Compare Saved Drafts
-                      </button>
+                <div class="card sub-card analysis-panel-section saved-drafts-section">
+                  <div class="card-body p-2">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                      <div class="section-subhead mb-0">SAVED DRAFTS</div>
+                      <span class="badge saved-badge" id="savedCount">0</span>
                     </div>
+                    <div id="savedDraftPreview" class="saved-preview-list small text-secondary">No
+                      saved drafts yet.</div>
+                    <button class="btn btn-compare-drafts w-100 mt-2" id="compareDraftsBtn" type="button">
+                      <i class="bi bi-layout-split me-1"></i>Compare Saved Drafts
+                    </button>
                   </div>
                 </div>
               </div>
