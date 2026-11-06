@@ -60,136 +60,144 @@
     </div>
   </header>
 
-  <!-- Main Blueprint / Wireframe Grid Layout -->
-  <main class="wireframe-workspace">
-    <!-- TOP ROW: HEROES GALLERY (Left) & DRAFT ANALYSIS/SUGGESTIONS (Right) -->
-    <section class="wireframe-top-row">
-      <!-- HEROES GALLERY CARD -->
-      <div class="card wireframe-box gallery-box">
-        <div class="card-header wireframe-header">
-          <h2 class="card-title wireframe-title mb-0">HEROES GALLERY</h2>
-          <div class="gallery-controls">
-            <!-- Attribute Filter Tabs -->
-            <div class="attr-filters" id="attrFilters">
-              <button class="attr-btn active" data-attr="all" type="button">All</button>
-              <button class="attr-btn str" data-attr="str" type="button" title="Strength"><span class="attr-icon str-icon"></span> STR</button>
-              <button class="attr-btn agi" data-attr="agi" type="button" title="Agility"><span class="attr-icon agi-icon"></span> AGI</button>
-              <button class="attr-btn int" data-attr="int" type="button" title="Intelligence"><span class="attr-icon int-icon"></span> INT</button>
-              <button class="attr-btn all-attr" data-attr="all-attr" type="button" title="Universal"><span class="attr-icon uni-icon"></span> UNI</button>
-            </div>
-
-            <!-- Role Filter Dropdown -->
-            <select class="form-select form-select-sm filter-select" id="roleFilter" aria-label="Filter by role">
-              <option value="all">All Roles</option>
-              <option value="carry">Carry</option>
-              <option value="support">Support</option>
-              <option value="initiator">Initiator</option>
-              <option value="disabler">Disabler</option>
-              <option value="durable">Durable</option>
-              <option value="nuker">Nuker</option>
-              <option value="pusher">Pusher</option>
-              <option value="escape">Escape</option>
-            </select>
-
-            <!-- Search input -->
-            <div class="search-wrap">
-              <i class="bi bi-search search-icon"></i>
-              <input type="search" class="hero-search-input" id="heroSearch" placeholder="Search hero..." autocomplete="off">
-              <button class="clear-search-btn d-none" id="clearSearchBtn" type="button"><i class="bi bi-x"></i></button>
-            </div>
-
-            <span class="hero-counter" id="heroCount">Loading...</span>
-          </div>
-        </div>
-
-        <!-- Hero Grid Body -->
-        <div class="card-body wireframe-body gallery-body p-2">
-          <div id="heroGrid" class="hero-gallery-grid">
-            <div class="loading-state">
-              <div class="spinner-border spinner-border-sm text-warning" role="status"></div>
-              <span class="ms-2">Loading hero roster from OpenDota...</span>
+  <!-- Main Blueprint / Wireframe Grid Layout (Utilizing Bootstrap Row, Col, Card) -->
+  <main class="container-fluid wireframe-workspace p-2 d-flex flex-column">
+    <!-- TOP ROW: HEROES GALLERY (Left Col) & DRAFT ANALYSIS/SUGGESTIONS (Right Col) -->
+    <div class="row g-2 wireframe-top-row flex-grow-1">
+      <!-- HEROES GALLERY COLUMN -->
+      <div class="col-12 col-lg-8 col-xl-9 gallery-col d-flex flex-column h-100">
+        <div class="card wireframe-box gallery-box flex-grow-1 h-100">
+          <div class="card-header wireframe-header">
+            <div class="row g-2 align-items-center w-100 m-0">
+              <div class="col-auto p-0">
+                <h2 class="card-title wireframe-title mb-0">HEROES GALLERY</h2>
+              </div>
+              <div class="col-auto">
+                <div class="attr-filters" id="attrFilters">
+                  <button class="attr-btn active" data-attr="all" type="button">All</button>
+                  <button class="attr-btn str" data-attr="str" type="button" title="Strength"><span class="attr-icon str-icon"></span> STR</button>
+                  <button class="attr-btn agi" data-attr="agi" type="button" title="Agility"><span class="attr-icon agi-icon"></span> AGI</button>
+                  <button class="attr-btn int" data-attr="int" type="button" title="Intelligence"><span class="attr-icon int-icon"></span> INT</button>
+                  <button class="attr-btn all-attr" data-attr="all-attr" type="button" title="Universal"><span class="attr-icon uni-icon"></span> UNI</button>
+                </div>
+              </div>
+              <div class="col-auto">
+                <select class="form-select form-select-sm filter-select" id="roleFilter" aria-label="Filter by role">
+                  <option value="all">All Roles</option>
+                  <option value="carry">Carry</option>
+                  <option value="support">Support</option>
+                  <option value="initiator">Initiator</option>
+                  <option value="disabler">Disabler</option>
+                  <option value="durable">Durable</option>
+                  <option value="nuker">Nuker</option>
+                  <option value="pusher">Pusher</option>
+                  <option value="escape">Escape</option>
+                </select>
+              </div>
+              <div class="col">
+                <div class="search-wrap">
+                  <i class="bi bi-search search-icon"></i>
+                  <input type="search" class="hero-search-input w-100" id="heroSearch" placeholder="Search hero..." autocomplete="off">
+                  <button class="clear-search-btn d-none" id="clearSearchBtn" type="button"><i class="bi bi-x"></i></button>
+                </div>
+              </div>
+              <div class="col-auto p-0">
+                <span class="hero-counter" id="heroCount">Loading...</span>
+              </div>
             </div>
           </div>
-          <div id="heroError" class="alert alert-warning d-none m-3" role="alert"></div>
+
+          <!-- Hero Grid Body Card -->
+          <div class="card-body wireframe-body gallery-body p-2">
+            <div id="heroGrid" class="hero-gallery-grid">
+              <div class="loading-state">
+                <div class="spinner-border spinner-border-sm text-warning" role="status"></div>
+                <span class="ms-2">Loading hero roster from OpenDota...</span>
+              </div>
+            </div>
+            <div id="heroError" class="alert alert-warning d-none m-3" role="alert"></div>
+          </div>
         </div>
       </div>
 
-      <!-- DRAFT ANALYSIS/SUGGESTIONS CARD -->
-      <div class="card wireframe-box analysis-box">
-        <div class="card-header wireframe-header">
-          <h2 class="card-title wireframe-title mb-0">DRAFT ANALYSIS/SUGGESTIONS</h2>
-          <span class="draft-phase-tag" id="draftPhaseTag">Phase 1 Bans</span>
-        </div>
+      <!-- DRAFT ANALYSIS/SUGGESTIONS COLUMN -->
+      <div class="col-12 col-lg-4 col-xl-3 analysis-col d-flex flex-column h-100">
+        <div class="card wireframe-box analysis-box flex-grow-1 h-100">
+          <div class="card-header wireframe-header d-flex justify-content-between align-items-center">
+            <h2 class="card-title wireframe-title mb-0">DRAFT ANALYSIS/SUGGESTIONS</h2>
+            <span class="draft-phase-tag" id="draftPhaseTag">Phase 1 Bans</span>
+          </div>
 
-        <div class="card-body wireframe-body analysis-body p-2">
-          <!-- Draft Advantage Gauge Card -->
-          <div class="card sub-card analysis-panel-section mb-2">
-            <div class="card-body p-2">
-              <div class="section-subhead">WIN PROJECTION &amp; ADVANTAGE</div>
-              <div class="advantage-container">
-                <div class="advantage-header">
-                  <span class="team-adv-val radiant-text" id="radiantAdvPct">50%</span>
-                  <span class="adv-label" id="advantageLabel">Even Matchup</span>
-                  <span class="team-adv-val dire-text" id="direAdvPct">50%</span>
+          <div class="card-body wireframe-body analysis-body p-2">
+            <!-- Draft Advantage Gauge Card -->
+            <div class="card sub-card analysis-panel-section mb-2">
+              <div class="card-body p-2">
+                <div class="section-subhead">WIN PROJECTION &amp; ADVANTAGE</div>
+                <div class="advantage-container">
+                  <div class="advantage-header">
+                    <span class="team-adv-val radiant-text" id="radiantAdvPct">50%</span>
+                    <span class="adv-label" id="advantageLabel">Even Matchup</span>
+                    <span class="team-adv-val dire-text" id="direAdvPct">50%</span>
+                  </div>
+                  <div class="advantage-bar-track">
+                    <div class="adv-bar-fill radiant-bar" id="radiantAdvBar" style="width: 50%"></div>
+                    <div class="adv-bar-fill dire-bar" id="direAdvBar" style="width: 50%"></div>
+                  </div>
                 </div>
-                <div class="advantage-bar-track">
-                  <div class="adv-bar-fill radiant-bar" id="radiantAdvBar" style="width: 50%"></div>
-                  <div class="adv-bar-fill dire-bar" id="direAdvBar" style="width: 50%"></div>
+              </div>
+            </div>
+
+            <!-- Dynamic Hero Suggestions Card -->
+            <div class="card sub-card analysis-panel-section mb-2">
+              <div class="card-body p-2">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <div class="section-subhead mb-0">RECOMMENDED HEROES</div>
+                  <span class="active-team-tag" id="suggestionTeamTag">FOR RADIANT</span>
+                </div>
+                <div class="suggestions-list" id="suggestionsContainer">
+                  <div class="suggestion-placeholder">Suggestions will appear as you pick or ban heroes.</div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- Dynamic Hero Suggestions Card -->
-          <div class="card sub-card analysis-panel-section mb-2">
-            <div class="card-body p-2">
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                <div class="section-subhead mb-0">RECOMMENDED HEROES</div>
-                <span class="active-team-tag" id="suggestionTeamTag">FOR RADIANT</span>
-              </div>
-              <div class="suggestions-list" id="suggestionsContainer">
-                <div class="suggestion-placeholder">Suggestions will appear as you pick or ban heroes.</div>
+            <!-- Lineup Role Breakdown & Warnings Card -->
+            <div class="card sub-card analysis-panel-section mb-2">
+              <div class="card-body p-2">
+                <div class="section-subhead">TEAM COMPOSITION &amp; SYNERGY</div>
+                <div id="compositionBreakdown" class="composition-breakdown">
+                  <div class="small text-secondary">Pick heroes to generate synergy insights and vulnerability warnings.</div>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- Lineup Role Breakdown & Warnings Card -->
-          <div class="card sub-card analysis-panel-section mb-2">
-            <div class="card-body p-2">
-              <div class="section-subhead">TEAM COMPOSITION &amp; SYNERGY</div>
-              <div id="compositionBreakdown" class="composition-breakdown">
-                <div class="small text-secondary">Pick heroes to generate synergy insights and vulnerability warnings.</div>
+            <!-- Saved Drafts Drawer / History Card -->
+            <div class="card sub-card analysis-panel-section saved-drafts-section">
+              <div class="card-body p-2">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <div class="section-subhead mb-0">SAVED DRAFTS</div>
+                  <span class="badge saved-badge" id="savedCount">0</span>
+                </div>
+                <div id="savedDraftPreview" class="saved-preview-list small text-secondary">No saved drafts yet.</div>
+                <button class="btn btn-compare-drafts w-100 mt-2" id="compareDraftsBtn" type="button">
+                  <i class="bi bi-layout-split me-1"></i>Compare Saved Drafts
+                </button>
               </div>
-            </div>
-          </div>
-
-          <!-- Saved Drafts Drawer / History Card -->
-          <div class="card sub-card analysis-panel-section saved-drafts-section">
-            <div class="card-body p-2">
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                <div class="section-subhead mb-0">SAVED DRAFTS</div>
-                <span class="badge saved-badge" id="savedCount">0</span>
-              </div>
-              <div id="savedDraftPreview" class="saved-preview-list small text-secondary">No saved drafts yet.</div>
-              <button class="btn btn-compare-drafts w-100 mt-2" id="compareDraftsBtn" type="button">
-                <i class="bi bi-layout-split me-1"></i>Compare Saved Drafts
-              </button>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
 
     <!-- BOTTOM ROW: RADIANT (Bans & Picks) & DIRE (Bans & Picks) -->
-    <section class="wireframe-bottom-row">
-      <!-- RADIANT HALF (Left) -->
-      <div class="team-side radiant-side">
+    <div class="row g-2 wireframe-bottom-row flex-shrink-0">
+      <!-- RADIANT COLUMN -->
+      <div class="col-12 col-lg-6 team-side radiant-side d-flex flex-column gap-2">
         <!-- RADIANT BANS (7 Slots) CARD -->
         <div class="card wireframe-box bans-box radiant-bans-box" id="radiantBansBox">
           <div class="wireframe-box-label radiant-label">RADIANT BANS</div>
-          <div class="card-body p-1">
-            <div class="slots-container ban-slots-row" id="radiantBanSlots">
-              <!-- 7 Ban Slots dynamically rendered -->
+          <div class="card-body p-2">
+            <div class="row g-1 ban-slots-row flex-nowrap w-100 m-0" id="radiantBanSlots">
+              <!-- 7 Ban Slots dynamically rendered into .col -->
             </div>
           </div>
         </div>
@@ -197,22 +205,22 @@
         <!-- RADIANT PICKS (5 Slots) CARD -->
         <div class="card wireframe-box picks-box radiant-picks-box" id="radiantPicksBox">
           <div class="wireframe-box-label radiant-label">RADIANT PICKS</div>
-          <div class="card-body p-1">
-            <div class="slots-container pick-slots-row" id="radiantPickSlots">
-              <!-- 5 Pick Slots dynamically rendered -->
+          <div class="card-body p-2">
+            <div class="row g-2 pick-slots-row flex-nowrap w-100 m-0" id="radiantPickSlots">
+              <!-- 5 Pick Slots dynamically rendered into .col -->
             </div>
           </div>
         </div>
       </div>
 
-      <!-- DIRE HALF (Right) -->
-      <div class="team-side dire-side">
+      <!-- DIRE COLUMN -->
+      <div class="col-12 col-lg-6 team-side dire-side d-flex flex-column gap-2">
         <!-- DIRE BANS (7 Slots) CARD -->
         <div class="card wireframe-box bans-box dire-bans-box" id="direBansBox">
           <div class="wireframe-box-label dire-label">DIRE BANS</div>
-          <div class="card-body p-1">
-            <div class="slots-container ban-slots-row" id="direBanSlots">
-              <!-- 7 Ban Slots dynamically rendered -->
+          <div class="card-body p-2">
+            <div class="row g-1 ban-slots-row flex-nowrap w-100 m-0" id="direBanSlots">
+              <!-- 7 Ban Slots dynamically rendered into .col -->
             </div>
           </div>
         </div>
@@ -220,14 +228,14 @@
         <!-- DIRE PICKS (5 Slots) CARD -->
         <div class="card wireframe-box picks-box dire-picks-box" id="direPicksBox">
           <div class="wireframe-box-label dire-label">DIRE PICKS</div>
-          <div class="card-body p-1">
-            <div class="slots-container pick-slots-row" id="direPickSlots">
-              <!-- 5 Pick Slots dynamically rendered -->
+          <div class="card-body p-2">
+            <div class="row g-2 pick-slots-row flex-nowrap w-100 m-0" id="direPickSlots">
+              <!-- 5 Pick Slots dynamically rendered into .col -->
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   </main>
 
   <!-- Hero Skills Hover Tooltip -->

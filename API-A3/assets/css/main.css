@@ -402,15 +402,13 @@ h1, h2, h3, h4, h5, h6,
 }
 
 /* =========================================================
-   TOP ROW: HEROES GALLERY & DRAFT ANALYSIS
+   TOP ROW: HEROES GALLERY & DRAFT ANALYSIS (Bootstrap Row & Col)
    ========================================================= */
-.wireframe-top-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 350px;
-  gap: 0.5rem;
+.wireframe-top-row.row {
   flex: 1 1 0%;
   min-height: 0;
-  overflow: hidden;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .gallery-box,
@@ -419,12 +417,6 @@ h1, h2, h3, h4, h5, h6,
   max-height: 100%;
   min-height: 0;
   overflow: hidden;
-}
-
-@media (max-width: 1200px) {
-  .wireframe-top-row {
-    grid-template-columns: minmax(0, 1fr) 320px;
-  }
 }
 
 /* Gallery Controls */
@@ -894,13 +886,12 @@ h1, h2, h3, h4, h5, h6,
 }
 
 /* =========================================================
-   BOTTOM ROW: RADIANT & DIRE (BANS & PICKS)
+   BOTTOM ROW: RADIANT & DIRE (BANS & PICKS - Bootstrap Row & Col)
    ========================================================= */
-.wireframe-bottom-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5rem;
+.wireframe-bottom-row.row {
   flex-shrink: 0;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .team-side {
@@ -919,11 +910,15 @@ h1, h2, h3, h4, h5, h6,
   padding: 0.65rem 0.5rem 0.45rem 0.5rem;
 }
 
-.ban-slots-row {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 6px;
+.ban-slots-row.row {
+  margin-left: 0;
+  margin-right: 0;
   width: 100%;
+}
+
+.ban-slots-row.row > .col {
+  min-width: 0;
+  flex: 1 0 0%;
 }
 
 .card.ban-slot,
@@ -1028,11 +1023,15 @@ h1, h2, h3, h4, h5, h6,
   padding: 0.75rem 0.5rem 0.45rem 0.5rem;
 }
 
-.pick-slots-row {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 8px;
+.pick-slots-row.row {
+  margin-left: 0;
+  margin-right: 0;
   width: 100%;
+}
+
+.pick-slots-row.row > .col {
+  min-width: 0;
+  flex: 1 0 0%;
 }
 
 .card.pick-slot,

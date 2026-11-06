@@ -253,16 +253,20 @@ function renderSlots() {
     const isNext = isRadiantTurn && isBanAction && i === state.radiantBans.length;
     if (hero) {
       return `
-        <div class="card ban-slot filled" data-hero-id="${hero.id}">
-          <img src="${heroPortrait(hero)}" alt="${hero.localized_name}">
-          <div class="ban-slash-overlay"></div>
-          <button class="btn-slot-remove" data-action="remove" data-team="radiant" data-type="ban" data-index="${i}" title="Remove ban">×</button>
+        <div class="col p-0">
+          <div class="card ban-slot filled h-100" data-hero-id="${hero.id}">
+            <img src="${heroPortrait(hero)}" alt="${hero.localized_name}">
+            <div class="ban-slash-overlay"></div>
+            <button class="btn-slot-remove" data-action="remove" data-team="radiant" data-type="ban" data-index="${i}" title="Remove ban">×</button>
+          </div>
         </div>
       `;
     }
     return `
-      <div class="card ban-slot ${isNext ? 'active-turn-slot radiant' : ''}" data-target-slot="radiant-ban-${i}" title="Radiant Ban Slot ${i + 1}">
-        <span class="slot-num">${i + 1}</span>
+      <div class="col p-0">
+        <div class="card ban-slot ${isNext ? 'active-turn-slot radiant' : ''} h-100" data-target-slot="radiant-ban-${i}" title="Radiant Ban Slot ${i + 1}">
+          <span class="slot-num">${i + 1}</span>
+        </div>
       </div>
     `;
   }).join("");
@@ -274,16 +278,20 @@ function renderSlots() {
     const isNext = isDireTurn && isBanAction && i === state.direBans.length;
     if (hero) {
       return `
-        <div class="card ban-slot filled" data-hero-id="${hero.id}">
-          <img src="${heroPortrait(hero)}" alt="${hero.localized_name}">
-          <div class="ban-slash-overlay"></div>
-          <button class="btn-slot-remove" data-action="remove" data-team="dire" data-type="ban" data-index="${i}" title="Remove ban">×</button>
+        <div class="col p-0">
+          <div class="card ban-slot filled h-100" data-hero-id="${hero.id}">
+            <img src="${heroPortrait(hero)}" alt="${hero.localized_name}">
+            <div class="ban-slash-overlay"></div>
+            <button class="btn-slot-remove" data-action="remove" data-team="dire" data-type="ban" data-index="${i}" title="Remove ban">×</button>
+          </div>
         </div>
       `;
     }
     return `
-      <div class="card ban-slot ${isNext ? 'active-turn-slot dire' : ''}" data-target-slot="dire-ban-${i}" title="Dire Ban Slot ${i + 1}">
-        <span class="slot-num">${i + 1}</span>
+      <div class="col p-0">
+        <div class="card ban-slot ${isNext ? 'active-turn-slot dire' : ''} h-100" data-target-slot="dire-ban-${i}" title="Dire Ban Slot ${i + 1}">
+          <span class="slot-num">${i + 1}</span>
+        </div>
       </div>
     `;
   }).join("");
@@ -296,22 +304,26 @@ function renderSlots() {
     if (hero) {
       const roleText = (hero.roles || []).slice(0, 2).join(" · ");
       return `
-        <div class="card pick-slot filled" data-hero-id="${hero.id}">
-          <img class="card-img-top pick-hero-img" src="${heroPortrait(hero)}" alt="${hero.localized_name}">
-          <span class="pick-attr-badge ${hero.primary_attr}"></span>
-          <div class="card-footer p-1 pick-hero-footer">
-            <span class="card-title pick-hero-name mb-0">${hero.localized_name}</span>
-            <span class="card-subtitle text-muted pick-hero-role">${roleText}</span>
+        <div class="col p-0">
+          <div class="card pick-slot filled h-100" data-hero-id="${hero.id}">
+            <img class="card-img-top pick-hero-img" src="${heroPortrait(hero)}" alt="${hero.localized_name}">
+            <span class="pick-attr-badge ${hero.primary_attr}"></span>
+            <div class="card-footer p-1 pick-hero-footer">
+              <span class="card-title pick-hero-name mb-0">${hero.localized_name}</span>
+              <span class="card-subtitle text-muted pick-hero-role">${roleText}</span>
+            </div>
+            <button class="btn-slot-remove" data-action="remove" data-team="radiant" data-type="pick" data-index="${i}" title="Remove pick">×</button>
           </div>
-          <button class="btn-slot-remove" data-action="remove" data-team="radiant" data-type="pick" data-index="${i}" title="Remove pick">×</button>
         </div>
       `;
     }
     return `
-      <div class="card pick-slot ${isNext ? 'active-turn-slot radiant' : ''}" data-target-slot="radiant-pick-${i}" title="Radiant Pick Slot ${i + 1}">
-        <div class="empty-pick-content">
-          <span class="empty-pick-num">${i + 1}</span>
-          <span class="empty-pick-label">PICK</span>
+      <div class="col p-0">
+        <div class="card pick-slot ${isNext ? 'active-turn-slot radiant' : ''} h-100" data-target-slot="radiant-pick-${i}" title="Radiant Pick Slot ${i + 1}">
+          <div class="empty-pick-content">
+            <span class="empty-pick-num">${i + 1}</span>
+            <span class="empty-pick-label">PICK</span>
+          </div>
         </div>
       </div>
     `;
@@ -325,22 +337,26 @@ function renderSlots() {
     if (hero) {
       const roleText = (hero.roles || []).slice(0, 2).join(" · ");
       return `
-        <div class="card pick-slot filled" data-hero-id="${hero.id}">
-          <img class="card-img-top pick-hero-img" src="${heroPortrait(hero)}" alt="${hero.localized_name}">
-          <span class="pick-attr-badge ${hero.primary_attr}"></span>
-          <div class="card-footer p-1 pick-hero-footer">
-            <span class="card-title pick-hero-name mb-0">${hero.localized_name}</span>
-            <span class="card-subtitle text-muted pick-hero-role">${roleText}</span>
+        <div class="col p-0">
+          <div class="card pick-slot filled h-100" data-hero-id="${hero.id}">
+            <img class="card-img-top pick-hero-img" src="${heroPortrait(hero)}" alt="${hero.localized_name}">
+            <span class="pick-attr-badge ${hero.primary_attr}"></span>
+            <div class="card-footer p-1 pick-hero-footer">
+              <span class="card-title pick-hero-name mb-0">${hero.localized_name}</span>
+              <span class="card-subtitle text-muted pick-hero-role">${roleText}</span>
+            </div>
+            <button class="btn-slot-remove" data-action="remove" data-team="dire" data-type="pick" data-index="${i}" title="Remove pick">×</button>
           </div>
-          <button class="btn-slot-remove" data-action="remove" data-team="dire" data-type="pick" data-index="${i}" title="Remove pick">×</button>
         </div>
       `;
     }
     return `
-      <div class="card pick-slot ${isNext ? 'active-turn-slot dire' : ''}" data-target-slot="dire-pick-${i}" title="Dire Pick Slot ${i + 1}">
-        <div class="empty-pick-content">
-          <span class="empty-pick-num">${i + 1}</span>
-          <span class="empty-pick-label">PICK</span>
+      <div class="col p-0">
+        <div class="card pick-slot ${isNext ? 'active-turn-slot dire' : ''} h-100" data-target-slot="dire-pick-${i}" title="Dire Pick Slot ${i + 1}">
+          <div class="empty-pick-content">
+            <span class="empty-pick-num">${i + 1}</span>
+            <span class="empty-pick-label">PICK</span>
+          </div>
         </div>
       </div>
     `;
